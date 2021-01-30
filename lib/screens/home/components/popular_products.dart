@@ -1,4 +1,5 @@
 import 'package:ecommerce/models/Product.dart';
+import 'package:ecommerce/screens/details/details_screen.dart';
 import 'package:ecommerce/screens/home/components/product_card.dart';
 import 'package:ecommerce/screens/home/components/section_title.dart';
 import 'package:ecommerce/size_config.dart';
@@ -22,7 +23,15 @@ class PopularProducts extends StatelessWidget {
             children: [
               ...List.generate(
                 demoProducts.length,
-                (index) => ProductCard(product: demoProducts[index]),
+                (index) => ProductCard(
+                  product: demoProducts[index],
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    DetailsScreen.route,
+                    arguments:
+                        ProductDetailsAgrument(product: demoProducts[index]),
+                  ),
+                ),
               ),
               SizedBox(
                 width: getProportionateScreenWidth(20),
