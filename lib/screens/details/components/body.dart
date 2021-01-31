@@ -1,5 +1,4 @@
 import 'package:ecommerce/components/default_button.dart';
-import 'package:ecommerce/components/rounded_icon_button.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/screens/details/components/color_dots.dart';
