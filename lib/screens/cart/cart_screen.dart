@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:ecommerce/components/default_button.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Cart.dart';
