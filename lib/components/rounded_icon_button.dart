@@ -16,6 +16,7 @@ class RoundedIconButton extends StatelessWidget {
     return SizedBox(
       height: getProportionateScreenWidth(40),
       width: getProportionateScreenWidth(40),
+      // ignore: deprecated_member_use
       child: FlatButton(
         padding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(

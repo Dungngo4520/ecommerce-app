@@ -20,6 +20,7 @@ class ProfileMenu extends StatelessWidget {
         horizontal: 20,
         vertical: 10,
       ),
+      // ignore: deprecated_member_use
       child: FlatButton(
         onPressed: onPressed,
         padding: EdgeInsets.all(20),

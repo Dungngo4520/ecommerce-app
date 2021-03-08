@@ -1,5 +1,6 @@
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/enum.dart';
+import 'package:ecommerce/screens/chat/chat_screen.dart';
 import 'package:ecommerce/screens/home/home_screen.dart';
 import 'package:ecommerce/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,8 @@ class CustomBottomNavBar extends StatelessWidget {
                     ? cPrimaryColor
                     : cSecondaryColor,
               ),
-              onPressed: () {},
+              onPressed: () =>
+                  Navigator.pushReplacementNamed(context, ChatScreen.route),
             ),
             IconButton(
               icon: SvgPicture.asset(
