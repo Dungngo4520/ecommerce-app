@@ -1,3 +1,5 @@
+import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/screens/home/components/categories.dart';
 import 'package:ecommerce/screens/home/components/home_banner.dart';
 import 'package:ecommerce/screens/home/components/home_header.dart';

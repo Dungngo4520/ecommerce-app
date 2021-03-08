@@ -14,10 +14,11 @@ class Body extends StatelessWidget {
             itemBuilder: (context, index) => ChatCard(
               chat: chatsData[index],
               onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MessagesScreen(),
-                  )),
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MessagesScreen(),
+                ),
+              ),
             ),
           ),
         ),
