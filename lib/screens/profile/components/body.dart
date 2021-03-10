@@ -1,5 +1,6 @@
 import 'package:ecommerce/screens/profile/components/profile_menu.dart';
 import 'package:ecommerce/screens/profile/components/profile_picture.dart';
+import 'package:ecommerce/screens/seller_products/seller_products_screen.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
@@ -21,9 +22,10 @@ class Body extends StatelessWidget {
             onPressed: () {},
           ),
           ProfileMenu(
-            text: 'Notifications',
-            icon: 'assets/icons/Bell.svg',
-            onPressed: () {},
+            text: 'My Shop',
+            icon: 'assets/icons/Shop Icon.svg',
+            onPressed: () =>
+                Navigator.pushNamed(context, SellerProductsScreen.route),
           ),
           ProfileMenu(
             text: 'Settings',
@@ -31,9 +33,13 @@ class Body extends StatelessWidget {
             onPressed: () {},
           ),
           ProfileMenu(
-            text: 'Help Center',
+            text: 'About',
             icon: 'assets/icons/Question mark.svg',
-            onPressed: () {},
+            onPressed: () => showAboutDialog(
+              context: context,
+              applicationVersion: '1.0',
+              applicationLegalese: "This is a demo product",
+            ),
           ),
           ProfileMenu(
             text: 'Log Out',

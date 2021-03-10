@@ -1,14 +1,11 @@
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/enum.dart';
-import 'package:ecommerce/screens/chat/chat_screen.dart';
-import 'package:ecommerce/screens/favorite/favorite_screen.dart';
-import 'package:ecommerce/screens/home/home_screen.dart';
-import 'package:ecommerce/screens/profile/profile_screen.dart';
+import 'package:ecommerce/screens/seller_products/seller_products_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomBottomNavBar extends StatelessWidget {
-  const CustomBottomNavBar({
+class SellerBottomNavBar extends StatelessWidget {
+  const SellerBottomNavBar({
     Key key,
     @required this.selectedMenu,
   }) : super(key: key);
@@ -39,50 +36,54 @@ class CustomBottomNavBar extends StatelessWidget {
           children: [
             IconButton(
               icon: SvgPicture.asset(
-                'assets/icons/Discover.svg',
-                color: MenuState.home == selectedMenu
+                'assets/icons/Product.svg',
+                color: MenuState.seller_product == selectedMenu
                     ? cPrimaryColor
                     : cSecondaryColor,
               ),
               onPressed: () {
-                if (selectedMenu != MenuState.home)
-                  Navigator.pushReplacementNamed(context, HomeScreen.route);
+                if (selectedMenu != MenuState.seller_product)
+                  Navigator.pushReplacementNamed(
+                      context, SellerProductsScreen.route);
               },
             ),
             IconButton(
               icon: SvgPicture.asset(
-                'assets/icons/Heart Icon.svg',
-                color: MenuState.favorite == selectedMenu
+                'assets/icons/Order.svg',
+                color: MenuState.seller_order == selectedMenu
                     ? cPrimaryColor
                     : cSecondaryColor,
               ),
               onPressed: () {
-                if (selectedMenu != MenuState.favorite)
-                  Navigator.pushReplacementNamed(context, FavoriteScreen.route);
+                if (selectedMenu != MenuState.seller_product)
+                  Navigator.pushReplacementNamed(
+                      context, SellerProductsScreen.route);
               },
             ),
             IconButton(
               icon: SvgPicture.asset(
-                'assets/icons/Chat bubble Icon.svg',
-                color: MenuState.message == selectedMenu
+                'assets/icons/Finance.svg',
+                color: MenuState.seller_finance == selectedMenu
                     ? cPrimaryColor
                     : cSecondaryColor,
               ),
               onPressed: () {
-                if (selectedMenu != MenuState.message)
-                  Navigator.pushReplacementNamed(context, ChatScreen.route);
+                if (selectedMenu != MenuState.seller_product)
+                  Navigator.pushReplacementNamed(
+                      context, SellerProductsScreen.route);
               },
             ),
             IconButton(
               icon: SvgPicture.asset(
-                'assets/icons/User Icon.svg',
-                color: MenuState.profile == selectedMenu
+                'assets/icons/Settings.svg',
+                color: MenuState.seller_setting == selectedMenu
                     ? cPrimaryColor
                     : cSecondaryColor,
               ),
               onPressed: () {
-                if (selectedMenu != MenuState.profile)
-                  Navigator.pushReplacementNamed(context, ProfileScreen.route);
+                if (selectedMenu != MenuState.seller_product)
+                  Navigator.pushReplacementNamed(
+                      context, SellerProductsScreen.route);
               },
             ),
           ],
