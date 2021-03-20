@@ -55,7 +55,7 @@ class SellerBottomNavBar extends StatelessWidget {
                     : cSecondaryColor,
               ),
               onPressed: () {
-                if (selectedMenu != MenuState.seller_product)
+                if (selectedMenu != MenuState.seller_order)
                   Navigator.pushReplacementNamed(
                       context, SellerProductsScreen.route);
               },
@@ -68,7 +68,7 @@ class SellerBottomNavBar extends StatelessWidget {
                     : cSecondaryColor,
               ),
               onPressed: () {
-                if (selectedMenu != MenuState.seller_product)
+                if (selectedMenu != MenuState.seller_finance)
                   Navigator.pushReplacementNamed(
                       context, SellerProductsScreen.route);
               },
@@ -81,7 +81,7 @@ class SellerBottomNavBar extends StatelessWidget {
                     : cSecondaryColor,
               ),
               onPressed: () {
-                if (selectedMenu != MenuState.seller_product)
+                if (selectedMenu != MenuState.seller_setting)
                   Navigator.pushReplacementNamed(
                       context, SellerProductsScreen.route);
               },

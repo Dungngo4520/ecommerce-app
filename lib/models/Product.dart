@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Product {
-  final int id;
-  final String title, description;
+  final String id, title, description;
   final List<String> images;
   final List<Color> colors;
   final double rating, price;
   final bool isFavorite, isPopular;
+  final String ownerId;
 
   Product({
+    @required this.ownerId,
     @required this.title,
     @required this.description,
     @required this.images,
@@ -23,7 +24,7 @@ class Product {
 
 List<Product> demoProducts = [
   Product(
-    id: 1,
+    id: 'product001',
     images: [
       "assets/images/ps4_console_white_1.png",
       "assets/images/ps4_console_white_2.png",
@@ -42,9 +43,10 @@ List<Product> demoProducts = [
     rating: 4.8,
     isFavorite: true,
     isPopular: true,
+    ownerId: 'user000',
   ),
   Product(
-    id: 2,
+    id: 'product002',
     images: [
       "assets/images/Image Popular Product 2.png",
     ],
@@ -59,9 +61,10 @@ List<Product> demoProducts = [
     description: description,
     rating: 4.1,
     isPopular: true,
+    ownerId: 'user000',
   ),
   Product(
-    id: 3,
+    id: 'product003',
     images: [
       "assets/images/glap.png",
     ],
@@ -77,9 +80,10 @@ List<Product> demoProducts = [
     rating: 4.1,
     isFavorite: true,
     isPopular: true,
+    ownerId: 'user000',
   ),
   Product(
-    id: 4,
+    id: 'product000',
     images: [
       "assets/images/wireless headset.png",
     ],
@@ -94,6 +98,7 @@ List<Product> demoProducts = [
     description: description,
     rating: 4.1,
     isFavorite: true,
+    ownerId: 'user000',
   ),
 ];
 

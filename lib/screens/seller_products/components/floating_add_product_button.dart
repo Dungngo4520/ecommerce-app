@@ -16,15 +16,17 @@ class FloatingAddProductButton extends StatelessWidget {
         color: cPrimaryColor.withOpacity(0.1),
         shape: BoxShape.circle,
       ),
-      child: IconButton(
-        onPressed: onPressed,
-        icon: Icon(
-          Icons.add,
-          color: cPrimaryColor,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(25),
+        child: Padding(
+          padding: EdgeInsets.all(15),
+          child: Icon(
+            Icons.add,
+            color: cPrimaryColor,
+            size: 25,
+          ),
         ),
-        splashColor: cPrimaryColor.withOpacity(0.2),
-        highlightColor: cPrimaryColor.withOpacity(0.2),
-        splashRadius: 24,
       ),
     );
   }
