@@ -1,6 +1,8 @@
 import 'package:ecommerce/screens/profile/components/profile_menu.dart';
 import 'package:ecommerce/screens/profile/components/profile_picture.dart';
 import 'package:ecommerce/screens/seller_products/seller_products_screen.dart';
+import 'package:ecommerce/screens/sign_in/sign_in_screen.dart';
+import 'package:ecommerce/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
@@ -44,7 +46,11 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: 'Log Out',
             icon: 'assets/icons/Log out.svg',
-            onPressed: () {},
+            onPressed: () {
+              AuthMethods().signOut().then((_) {
+                Navigator.pushReplacementNamed(context, SignInScreen.route);
+              });
+            },
           ),
         ],
       ),

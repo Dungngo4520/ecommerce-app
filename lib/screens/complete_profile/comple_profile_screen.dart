@@ -9,8 +9,10 @@ class CompleteProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Complete Profile'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
-      body: Body(),
+      body:
+          Body(userEmailAndPassword: ModalRoute.of(context).settings.arguments),
     );
   }
 }

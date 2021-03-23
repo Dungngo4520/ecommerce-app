@@ -4,6 +4,7 @@ import 'package:ecommerce/components/form_error.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/screens/forgot_password/forgot_password_screen.dart';
 import 'package:ecommerce/screens/home/home_screen.dart';
+import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +63,8 @@ class _SignFormState extends State<SignForm> {
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                Navigator.pushNamed(context, HomeScreen.route);
+                AuthMethods()
+                    .signInWithEmailAndPassword(context, email, password);
               }
             },
           )

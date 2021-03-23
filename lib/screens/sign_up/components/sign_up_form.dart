@@ -32,7 +32,9 @@ class _SignUpFormState extends State<SignUpForm> {
             text: 'Register',
             onPressed: () {
               if (_formKey.currentState.validate()) {
-                Navigator.pushNamed(context, CompleteProfileScreen.route);
+                Navigator.pushReplacementNamed(
+                    context, CompleteProfileScreen.route,
+                    arguments: [email, password]);
               }
             },
           )
@@ -41,33 +43,44 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildConfirmPasswordFormField() {
+  TextFormField buildEmailFormField() {
     return TextFormField(
-      onSaved: (newValue) => confirmPassword = newValue,
+      onSaved: (newValue) => email = newValue,
+      keyboardType: TextInputType.emailAddress,
       onChanged: (value) {
-        if (password == confirmPassword) {
+        if (value.isNotEmpty && errors.contains(cEmailNullError)) {
           setState(() {
-            errors.remove(cPasswordMatchError);
+            errors.remove(cEmailNullError);
+          });
+        } else if (emailRegExp.hasMatch(value) &&
+            errors.contains(cEmailInvalidError)) {
+          setState(() {
+            errors.remove(cEmailInvalidError);
           });
         }
+        email = value;
         return null;
       },
       validator: (value) {
-        if (value.isEmpty) {
-          return "This field must be filled";
-        } else if (password != value && !errors.contains(cPasswordMatchError)) {
+        if (value.isEmpty && !errors.contains(cEmailNullError)) {
           setState(() {
-            errors.add(cPasswordMatchError);
-            return cPasswordMatchError;
+            errors.add(cEmailNullError);
           });
+          return 'This field must be filled';
+        } else if (!emailRegExp.hasMatch(value) &&
+            !errors.contains(cEmailInvalidError) &&
+            !errors.contains(cEmailNullError)) {
+          setState(() {
+            errors.add(cEmailInvalidError);
+          });
+          return cEmailInvalidError;
         }
         return null;
       },
-      obscureText: true,
       decoration: InputDecoration(
-          labelText: 'Confirm Password',
-          hintText: 'Retype your password',
-          suffixIcon: CustomSuffixIcon(svgIcon: 'assets/icons/Lock.svg')),
+          labelText: 'Email',
+          hintText: 'Enter your email',
+          suffixIcon: CustomSuffixIcon(svgIcon: 'assets/icons/Mail.svg')),
     );
   }
 
@@ -111,43 +124,34 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildEmailFormField() {
+  TextFormField buildConfirmPasswordFormField() {
     return TextFormField(
-      onSaved: (newValue) => email = newValue,
-      keyboardType: TextInputType.emailAddress,
+      onSaved: (newValue) => confirmPassword = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(cEmailNullError)) {
+        if (password == confirmPassword) {
           setState(() {
-            errors.remove(cEmailNullError);
-          });
-        } else if (emailRegExp.hasMatch(value) &&
-            errors.contains(cEmailInvalidError)) {
-          setState(() {
-            errors.remove(cEmailInvalidError);
+            errors.remove(cPasswordMatchError);
           });
         }
+        confirmPassword = value;
         return null;
       },
       validator: (value) {
-        if (value.isEmpty && !errors.contains(cEmailNullError)) {
+        if (value.isEmpty) {
+          return "This field must be filled";
+        } else if (password != value && !errors.contains(cPasswordMatchError)) {
           setState(() {
-            errors.add(cEmailNullError);
+            errors.add(cPasswordMatchError);
+            return cPasswordMatchError;
           });
-          return 'This field must be filled';
-        } else if (!emailRegExp.hasMatch(value) &&
-            !errors.contains(cEmailInvalidError) &&
-            !errors.contains(cEmailNullError)) {
-          setState(() {
-            errors.add(cEmailInvalidError);
-          });
-          return cEmailInvalidError;
         }
         return null;
       },
+      obscureText: true,
       decoration: InputDecoration(
-          labelText: 'Email',
-          hintText: 'Enter your email',
-          suffixIcon: CustomSuffixIcon(svgIcon: 'assets/icons/Mail.svg')),
+          labelText: 'Confirm Password',
+          hintText: 'Retype your password',
+          suffixIcon: CustomSuffixIcon(svgIcon: 'assets/icons/Lock.svg')),
     );
   }
 }

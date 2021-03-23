@@ -18,7 +18,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 14),
+      padding: EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -37,53 +37,80 @@ class CustomBottomNavBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/Discover.svg',
-                color: MenuState.home == selectedMenu
-                    ? cPrimaryColor
-                    : cSecondaryColor,
-              ),
-              onPressed: () {
-                if (selectedMenu != MenuState.home)
-                  Navigator.pushReplacementNamed(context, HomeScreen.route);
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/Discover.svg',
+                    // height: 30,
+                    color: MenuState.home == selectedMenu
+                        ? cPrimaryColor
+                        : cSecondaryColor,
+                  ),
+                  onPressed: () {
+                    if (selectedMenu != MenuState.home)
+                      Navigator.pushReplacementNamed(context, HomeScreen.route);
+                  },
+                ),
+                Text("Home", style: TextStyle(fontSize: 12)),
+              ],
             ),
-            IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/Heart Icon.svg',
-                color: MenuState.favorite == selectedMenu
-                    ? cPrimaryColor
-                    : cSecondaryColor,
-              ),
-              onPressed: () {
-                if (selectedMenu != MenuState.favorite)
-                  Navigator.pushReplacementNamed(context, FavoriteScreen.route);
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/Heart Icon.svg',
+                    color: MenuState.favorite == selectedMenu
+                        ? cPrimaryColor
+                        : cSecondaryColor,
+                  ),
+                  onPressed: () {
+                    if (selectedMenu != MenuState.favorite)
+                      Navigator.pushReplacementNamed(
+                          context, FavoriteScreen.route);
+                  },
+                ),
+                Text("Favorite", style: TextStyle(fontSize: 12)),
+              ],
             ),
-            IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/Chat bubble Icon.svg',
-                color: MenuState.message == selectedMenu
-                    ? cPrimaryColor
-                    : cSecondaryColor,
-              ),
-              onPressed: () {
-                if (selectedMenu != MenuState.message)
-                  Navigator.pushReplacementNamed(context, ChatScreen.route);
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/Chat bubble Icon.svg',
+                    color: MenuState.message == selectedMenu
+                        ? cPrimaryColor
+                        : cSecondaryColor,
+                  ),
+                  onPressed: () {
+                    if (selectedMenu != MenuState.message)
+                      Navigator.pushReplacementNamed(context, ChatScreen.route);
+                  },
+                ),
+                Text("Chat", style: TextStyle(fontSize: 12)),
+              ],
             ),
-            IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/User Icon.svg',
-                color: MenuState.profile == selectedMenu
-                    ? cPrimaryColor
-                    : cSecondaryColor,
-              ),
-              onPressed: () {
-                if (selectedMenu != MenuState.profile)
-                  Navigator.pushReplacementNamed(context, ProfileScreen.route);
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: SvgPicture.asset(
+                    'assets/icons/User Icon.svg',
+                    color: MenuState.profile == selectedMenu
+                        ? cPrimaryColor
+                        : cSecondaryColor,
+                  ),
+                  onPressed: () {
+                    if (selectedMenu != MenuState.profile)
+                      Navigator.pushReplacementNamed(
+                          context, ProfileScreen.route);
+                  },
+                ),
+                Text("Profile", style: TextStyle(fontSize: 12)),
+              ],
             ),
           ],
         ),

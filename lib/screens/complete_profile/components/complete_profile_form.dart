@@ -3,10 +3,16 @@ import 'package:ecommerce/components/default_button.dart';
 import 'package:ecommerce/components/form_error.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/screens/otp/opt_screen.dart';
+import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 
 class CompleteProfileForm extends StatefulWidget {
+  final List<String> userEmailAndPassword;
+
+  const CompleteProfileForm({Key key, @required this.userEmailAndPassword})
+      : super(key: key);
+
   @override
   _CompleteProfileFormState createState() => _CompleteProfileFormState();
 }
@@ -34,6 +40,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.userEmailAndPassword);
     return Form(
       key: _formKey,
       child: Column(
@@ -51,7 +58,13 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             text: "Continue",
             onPressed: () {
               if (_formKey.currentState.validate()) {
-                Navigator.pushNamed(context, OTPScreen.route);
+                AuthMethods().createUserWithUserData(context, [
+                  ...widget.userEmailAndPassword,
+                  firstName,
+                  lastName,
+                  phoneNumber,
+                  address,
+                ]);
               }
             },
           ),
@@ -67,6 +80,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         if (value.isNotEmpty) {
           removeError(error: cAddressNullError);
         }
+        address = value;
         return null;
       },
       validator: (value) {
@@ -92,6 +106,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         if (value.isNotEmpty) {
           removeError(error: cPhoneNumberNullError);
         }
+        phoneNumber = value;
         return null;
       },
       validator: (value) {
@@ -115,6 +130,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         if (value.isNotEmpty) {
           removeError(error: cNameNullError);
         }
+        lastName = value;
         return null;
       },
       validator: (value) {
@@ -138,6 +154,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         if (value.isNotEmpty) {
           removeError(error: cNameNullError);
         }
+        firstName = value;
         return null;
       },
       validator: (value) {

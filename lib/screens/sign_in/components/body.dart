@@ -1,6 +1,7 @@
-import 'package:ecommerce/components/no_account_text.dart';
-import 'package:ecommerce/components/social_dot.dart';
+import 'package:ecommerce/screens/sign_in/components/no_account_text.dart';
+import 'package:ecommerce/screens/sign_in/components/social_dot.dart';
 import 'package:ecommerce/screens/sign_in/components/sign_form.dart';
+import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -36,20 +37,15 @@ class Body extends StatelessWidget {
                 SizedBox(
                   height: SizeConfig.screenHeight * 0.06,
                 ),
+                Text("Or sign in with Google"),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SocialDot(
                       icon: 'assets/icons/google-icon.svg',
-                      onPressed: () {},
-                    ),
-                    SocialDot(
-                      icon: 'assets/icons/facebook.svg',
-                      onPressed: () {},
-                    ),
-                    SocialDot(
-                      icon: 'assets/icons/twitter.svg',
-                      onPressed: () {},
+                      onPressed: () {
+                        AuthMethods().signInWithGoogle(context);
+                      },
                     ),
                   ],
                 ),

@@ -1,7 +1,9 @@
 import 'package:ecommerce/components/default_button.dart';
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/screens/home/home_screen.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class OTPForm extends StatefulWidget {
   @override
@@ -48,6 +50,9 @@ class _OTPFormState extends State<OTPForm> {
               SizedBox(
                 width: getProportionateScreenWidth(60),
                 child: TextFormField(
+                  inputFormatters: [
+                    new LengthLimitingTextInputFormatter(1),
+                  ],
                   autofocus: true,
                   keyboardType: TextInputType.number,
                   style: TextStyle(fontSize: 24, color: cTextColor),
@@ -56,12 +61,16 @@ class _OTPFormState extends State<OTPForm> {
                   obscureText: true,
                   onChanged: (value) {
                     nextPin(value: value, focusNode: pin2FocusNode);
+                    
                   },
                 ),
               ),
               SizedBox(
                 width: getProportionateScreenWidth(60),
                 child: TextFormField(
+                  inputFormatters: [
+                    new LengthLimitingTextInputFormatter(1),
+                  ],
                   focusNode: pin2FocusNode,
                   keyboardType: TextInputType.number,
                   style: TextStyle(fontSize: 24, color: cTextColor),
@@ -76,6 +85,9 @@ class _OTPFormState extends State<OTPForm> {
               SizedBox(
                 width: getProportionateScreenWidth(60),
                 child: TextFormField(
+                  inputFormatters: [
+                    new LengthLimitingTextInputFormatter(1),
+                  ],
                   focusNode: pin3FocusNode,
                   keyboardType: TextInputType.number,
                   style: TextStyle(fontSize: 24, color: cTextColor),
@@ -90,6 +102,9 @@ class _OTPFormState extends State<OTPForm> {
               SizedBox(
                 width: getProportionateScreenWidth(60),
                 child: TextFormField(
+                  inputFormatters: [
+                    new LengthLimitingTextInputFormatter(1),
+                  ],
                   focusNode: pin4FocusNode,
                   keyboardType: TextInputType.number,
                   style: TextStyle(fontSize: 24, color: cTextColor),
@@ -109,7 +124,9 @@ class _OTPFormState extends State<OTPForm> {
           DefaultButton(
             text: 'Continue',
             onPressed: () {
-              if (_formKey.currentState.validate()) {}
+              if (_formKey.currentState.validate()) {
+                Navigator.pushReplacementNamed(context, HomeScreen.route);
+              }
             },
           )
         ],

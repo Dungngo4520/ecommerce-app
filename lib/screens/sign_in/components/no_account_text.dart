@@ -14,7 +14,7 @@ class NoAccountText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Don\'t have an account?',
+          'Don\'t have an account? ',
           style: TextStyle(fontSize: getProportionateScreenWidth(16)),
         ),
         GestureDetector(
