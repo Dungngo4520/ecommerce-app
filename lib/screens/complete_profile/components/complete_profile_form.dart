@@ -1,8 +1,8 @@
 import 'package:ecommerce/components/custom_suffix_icon.dart';
 import 'package:ecommerce/components/default_button.dart';
 import 'package:ecommerce/components/form_error.dart';
+import 'package:ecommerce/components/loading_screen.dart';
 import 'package:ecommerce/constants.dart';
-import 'package:ecommerce/screens/otp/opt_screen.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +21,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
   String firstName, lastName, phoneNumber, address;
+  bool loading = false;
 
   addError({String error}) {
     if (!errors.contains(error)) {
@@ -41,35 +42,49 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   @override
   Widget build(BuildContext context) {
     print(widget.userEmailAndPassword);
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          buildFirstNameFormField(),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          buildLastNameFormField(),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          buildPhoneNumberFormField(),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          buildAddressFormField(),
-          FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          DefaultButton(
-            text: "Continue",
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                AuthMethods().createUserWithUserData(context, [
-                  ...widget.userEmailAndPassword,
-                  firstName,
-                  lastName,
-                  phoneNumber,
-                  address,
-                ]);
-              }
-            },
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: AlignmentDirectional.bottomCenter,
+      children: [
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              buildFirstNameFormField(),
+              SizedBox(height: getProportionateScreenHeight(10)),
+              buildLastNameFormField(),
+              SizedBox(height: getProportionateScreenHeight(10)),
+              buildPhoneNumberFormField(),
+              SizedBox(height: getProportionateScreenHeight(10)),
+              buildAddressFormField(),
+              FormError(errors: errors),
+              SizedBox(height: getProportionateScreenHeight(10)),
+              DefaultButton(
+                text: "Continue",
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    if (!await AuthMethods().createUserWithUserData(context, [
+                      ...widget.userEmailAndPassword,
+                      firstName,
+                      lastName,
+                      phoneNumber,
+                      address,
+                    ])) {
+                      setState(() {
+                        loading = true;
+                      });
+                    }
+                  }
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          bottom: -40,
+          child: loading ? LoadingScreen() : Container(),
+        ),
+      ],
     );
   }
 

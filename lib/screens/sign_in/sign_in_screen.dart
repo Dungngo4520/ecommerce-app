@@ -6,18 +6,14 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
-      body: Body(),
-    );
-  }
-
-  AppBar buildAppBar() {
-    return AppBar(
-      centerTitle: true,
-      title: Text(
-        'Sign In',
-        textAlign: TextAlign.center,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Sign In',
+          textAlign: TextAlign.center,
+        ),
       ),
+      body: Body(),
     );
   }
 }

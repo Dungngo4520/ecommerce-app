@@ -5,9 +5,11 @@ class SharedPreferenceHelper {
   static String userNameKey = 'USERNAMEKEY';
   static String userDisplayNameKey = 'USERDISPLAYNAMEKEY';
   static String userEmailKey = 'USEREMAILKEY';
-  static String userPhotoURL = 'USERPHOTOURL';
-  static String userPhoneNumber = 'USERPHONENUMBER';
-  static String userAddress = 'USERADDRESS';
+  static String userPhotoURLKey = 'USERPHOTOURLKEY';
+  static String userPhoneNumberKey = 'USERPHONENUMBERKEY';
+  static String userAddressKey = 'USERADDRESSKEY';
+  static String signInEmailInputKey = 'SIGNINEMAILINPUTKEY';
+  static String signInPasswordInputKey = 'SIGNINPASSWORDINPUTKEY';
 
 // set
   Future<bool> saveUserId(String getUserId) async {
@@ -32,52 +34,73 @@ class SharedPreferenceHelper {
 
   Future<bool> saveUserPhotoURL(String getUserPhotoURL) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.setString(userPhotoURL, getUserPhotoURL);
+    return preferences.setString(userPhotoURLKey, getUserPhotoURL);
   }
 
   Future<bool> saveUserPhoneNumber(String getUserPhoneNumber) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.setString(userPhoneNumber, getUserPhoneNumber);
+    return preferences.setString(userPhoneNumberKey, getUserPhoneNumber);
   }
 
   Future<bool> saveUserAddress(String getUserAddress) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.setString(userAddress, getUserAddress);
+    return preferences.setString(userAddressKey, getUserAddress);
+  }
+
+  Future<bool> saveSignInEmailInput(String getsignInEmailInput) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setString(signInEmailInputKey, getsignInEmailInput);
+  }
+
+  Future<bool> saveSignInPasswordInput(String getsignInPasswordInput) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setString(
+        signInPasswordInputKey, getsignInPasswordInput);
   }
 
   // get
-  Future<String> getUserId(String getUserId) async {
+  Future<String> getUserId() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userIdKey);
   }
 
-  Future<String> getUserName(String getUserName) async {
+  Future<String> getUserName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userNameKey);
   }
 
-  Future<String> getUserDisplayName(String getUserDisplayName) async {
+  Future<String> getUserDisplayName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userDisplayNameKey);
   }
 
-  Future<String> getUserEmail(String getUserEmail) async {
+  Future<String> getUserEmail() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userEmailKey);
   }
 
-  Future<String> getUserPhotoURL(String getUserPhotoURL) async {
+  Future<String> getUserPhotoURL() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString(userPhotoURL);
+    return preferences.getString(userPhotoURLKey);
   }
 
-  Future<String> getUserPhoneNumber(String getUserPhoneNumber) async {
+  Future<String> getUserPhoneNumber() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString(userPhoneNumber);
+    return preferences.getString(userPhoneNumberKey);
   }
 
-  Future<String> getUserAddress(String getUserAddress) async {
+  Future<String> getUserAddress() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getString(userAddress);
+    return preferences.getString(userAddressKey);
+  }
+
+  Future<String> getSignInEmailInput() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString(signInEmailInputKey);
+  }
+
+  Future<String> getSignInPasswordInput() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.getString(signInPasswordInputKey);
   }
 }

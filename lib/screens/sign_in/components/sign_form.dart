@@ -1,10 +1,11 @@
 import 'package:ecommerce/components/custom_suffix_icon.dart';
 import 'package:ecommerce/components/default_button.dart';
 import 'package:ecommerce/components/form_error.dart';
+import 'package:ecommerce/components/loading_screen.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/screens/forgot_password/forgot_password_screen.dart';
-import 'package:ecommerce/screens/home/home_screen.dart';
 import 'package:ecommerce/services/auth.dart';
+import 'package:ecommerce/services/shared_preference_helper.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -16,66 +17,104 @@ class SignForm extends StatefulWidget {
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
-  String email, password;
-  bool remember = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool inputRemember = true;
+  bool loading = false;
+
+  getSaveInput() async {
+    emailController.text = await SharedPreferenceHelper().getSignInEmailInput();
+    passwordController.text =
+        await SharedPreferenceHelper().getSignInPasswordInput();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getSaveInput();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          Row(
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: AlignmentDirectional.bottomCenter,
+      children: [
+        Form(
+          key: _formKey,
+          child: Column(
             children: [
+              buildEmailFormField(),
+              SizedBox(height: getProportionateScreenHeight(20)),
+              buildPasswordFormField(),
+              SizedBox(height: getProportionateScreenHeight(20)),
               Row(
                 children: [
-                  Checkbox(
-                    value: remember,
-                    activeColor: cPrimaryColor,
-                    onChanged: (value) {
-                      setState(() {
-                        remember = value;
-                      });
-                    },
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: inputRemember,
+                        activeColor: cPrimaryColor,
+                        onChanged: (value) async {
+                          setState(() {
+                            inputRemember = value;
+                          });
+                        },
+                      ),
+                      Text('Remember me'),
+                    ],
                   ),
-                  Text('Remember me'),
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(
+                        context, ForgotPasswordScreen.route),
+                    child: Text(
+                      'Forget Password',
+                      style: TextStyle(decoration: TextDecoration.underline),
+                    ),
+                  ),
                 ],
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
-              GestureDetector(
-                onTap: () =>
-                    Navigator.pushNamed(context, ForgotPasswordScreen.route),
-                child: Text(
-                  'Forget Password',
-                  style: TextStyle(decoration: TextDecoration.underline),
-                ),
+              FormError(errors: errors),
+              SizedBox(height: getProportionateScreenHeight(20)),
+              DefaultButton(
+                text: 'Continue',
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    setState(() {
+                      loading = true;
+                    });
+                    _formKey.currentState.save();
+                    await SharedPreferenceHelper().saveSignInEmailInput(
+                        inputRemember ? emailController.text : "");
+                    await SharedPreferenceHelper().saveSignInPasswordInput(
+                        inputRemember ? passwordController.text : "");
+
+                    if (!await AuthMethods().signInWithEmailAndPassword(context,
+                        emailController.text, passwordController.text)) {
+                      setState(() {
+                        loading = false;
+                      });
+                    }
+                  }
+                },
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
-          FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          DefaultButton(
-            text: 'Continue',
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                AuthMethods()
-                    .signInWithEmailAndPassword(context, email, password);
-              }
-            },
-          )
-        ],
-      ),
+        ),
+        Positioned(
+          bottom: -40,
+          child: loading ? LoadingScreen() : Container(),
+        ),
+      ],
     );
   }
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      onSaved: (newValue) => email = newValue,
+      controller: emailController,
+      onSaved: (newValue) => emailController.text = newValue,
       keyboardType: TextInputType.emailAddress,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(cEmailNullError)) {
@@ -106,6 +145,10 @@ class _SignFormState extends State<SignForm> {
         }
         return null;
       },
+      onTap: () {
+        emailController.selection = TextSelection(
+            baseOffset: 0, extentOffset: emailController.value.text.length);
+      },
       decoration: InputDecoration(
           labelText: 'Email',
           hintText: 'Enter your email',
@@ -115,7 +158,8 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      onSaved: (newValue) => password = newValue,
+      controller: passwordController,
+      onSaved: (newValue) => passwordController.text = newValue,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(cPasswordNullError)) {
           setState(() {
@@ -143,6 +187,10 @@ class _SignFormState extends State<SignForm> {
           return cPasswordShortError;
         }
         return null;
+      },
+      onTap: () {
+        passwordController.selection = TextSelection(
+            baseOffset: 0, extentOffset: passwordController.value.text.length);
       },
       obscureText: true,
       decoration: InputDecoration(

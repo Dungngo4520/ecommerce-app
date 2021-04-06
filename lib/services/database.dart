@@ -4,4 +4,8 @@ class DatabaseMethods {
   Future addUserInfoToDB(String userId, Map<String, dynamic> userInfo) async{
     return FirebaseFirestore.instance.collection('users').doc(userId).set(userInfo);
   }
+
+  getChatByUserName(String username){
+    // FirebaseFirestore.instance.collection("chats").where('')
+  }
 }

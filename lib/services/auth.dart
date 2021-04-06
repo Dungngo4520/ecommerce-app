@@ -1,4 +1,3 @@
-import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/screens/home/home_screen.dart';
 import 'package:ecommerce/services/database.dart';
 import 'package:ecommerce/services/shared_preference_helper.dart';
@@ -20,14 +19,14 @@ class AuthMethods {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: userData[0], password: userData[1]);
-      print(userCredential);
       if (userCredential != null) {
         User userDetails = userCredential.user;
         SharedPreferenceHelper().saveUserId(userDetails.uid);
+        SharedPreferenceHelper()
+            .saveUserName(userDetails.email.replaceAll(new RegExp(r'@.+'), ''));
         SharedPreferenceHelper().saveUserEmail(userDetails.email);
         String displayName = userData[2] + " " + userData[3];
         SharedPreferenceHelper().saveUserDisplayName(displayName);
-        SharedPreferenceHelper().saveUserPhotoURL("");
         SharedPreferenceHelper().saveUserPhoneNumber(userData[4]);
         SharedPreferenceHelper().saveUserPhotoURL(userData[5]);
 
@@ -42,13 +41,14 @@ class AuthMethods {
         DatabaseMethods().addUserInfoToDB(userDetails.uid, userInfo).then((_) {
           Navigator.pushReplacementNamed(context, HomeScreen.route);
         });
+        return true;
       }
+      return false;
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.message),
       ));
-    } catch (e) {
-      print(e);
+      return false;
     }
   }
 
@@ -58,48 +58,74 @@ class AuthMethods {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       if (userCredential != null) {
+        User userDetails = userCredential.user;
+        SharedPreferenceHelper().saveUserId(userDetails.uid);
+        SharedPreferenceHelper()
+            .saveUserName(userDetails.email.replaceAll(new RegExp(r'@.+'), ''));
+        SharedPreferenceHelper().saveUserEmail(userDetails.email);
+        SharedPreferenceHelper()
+            .saveUserDisplayName(userDetails.displayName ?? "");
+        SharedPreferenceHelper().saveUserPhotoURL(userDetails.photoURL);
+        SharedPreferenceHelper()
+            .saveUserPhoneNumber(userDetails.phoneNumber ?? "");
+
         Navigator.pushReplacementNamed(context, HomeScreen.route);
+        return true;
       }
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(e.message),
       ));
+      return false;
     }
   }
 
   signInWithGoogle(BuildContext context) async {
-    final GoogleSignInAccount googleSignInAccount =
-        await GoogleSignIn().signIn();
+    try {
+      final GoogleSignInAccount googleSignInAccount =
+          await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
 
-    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-      idToken: googleSignInAuthentication.idToken,
-      accessToken: googleSignInAuthentication.accessToken,
-    );
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
+      final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken,
+      );
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-    User userDetails = userCredential.user;
+      User userDetails = userCredential.user;
 
-    if (userCredential != null) {
-      SharedPreferenceHelper().saveUserId(userDetails.uid);
-      SharedPreferenceHelper().saveUserEmail(userDetails.email);
-      SharedPreferenceHelper().saveUserDisplayName(userDetails.displayName);
-      SharedPreferenceHelper().saveUserPhotoURL(userDetails.photoURL);
+      if (userCredential != null) {
+        SharedPreferenceHelper().saveUserId(userDetails.uid);
+        SharedPreferenceHelper()
+            .saveUserName(userDetails.email.replaceAll(new RegExp(r'@.+'), ''));
+        SharedPreferenceHelper().saveUserEmail(userDetails.email);
+        SharedPreferenceHelper().saveUserDisplayName(userDetails.displayName);
+        SharedPreferenceHelper().saveUserPhotoURL(userDetails.photoURL);
+        SharedPreferenceHelper()
+            .saveUserPhoneNumber(userDetails.phoneNumber ?? "");
 
-      Map<String, dynamic> userInfo = {
-        'email': userDetails.email,
-        'username': userDetails.email.replaceAll(new RegExp(r'@.+'), ''),
-        'name': userDetails.displayName,
-        'photoURL': userDetails.photoURL,
-        'phone': userDetails.phoneNumber,
-        'address': '',
-      };
-      DatabaseMethods().addUserInfoToDB(userDetails.uid, userInfo).then((_) {
-        Navigator.pushReplacementNamed(context, HomeScreen.route);
-      });
+        Map<String, dynamic> userInfo = {
+          'email': userDetails.email,
+          'username': userDetails.email.replaceAll(new RegExp(r'@.+'), ''),
+          'name': userDetails.displayName,
+          'photoURL': userDetails.photoURL,
+          'phone': userDetails.phoneNumber,
+          'address': '',
+        };
+        DatabaseMethods().addUserInfoToDB(userDetails.uid, userInfo).then((_) {
+          Navigator.pushReplacementNamed(context, HomeScreen.route);
+        });
+        return true;
+      }
+      return false;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.message),
+      ));
+      return false;
     }
   }
 
