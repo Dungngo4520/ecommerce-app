@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class ProductItems extends StatelessWidget {
   const ProductItems({
-    Key key,
-    @required this.product,
+    Key? key,
+    required this.product,
   }) : super(key: key);
 
   final List<Product> product;

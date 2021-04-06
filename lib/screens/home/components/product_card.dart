@@ -6,11 +6,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
-    Key key,
+    Key? key,
     this.width = 140,
     this.aspectRatio = 1.02,
-    @required this.product,
-    @required this.onTap,
+    required this.product,
+    required this.onTap,
   }) : super(key: key);
 
   final double width, aspectRatio;

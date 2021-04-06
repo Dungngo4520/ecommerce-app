@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle({
-    Key key,
-    @required this.text,
-    @required this.onTap,
+    Key? key,
+    required this.text,
+    required this.onTap,
   }) : super(key: key);
   final String text;
   final GestureTapCallback onTap;

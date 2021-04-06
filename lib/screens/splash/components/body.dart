@@ -2,6 +2,7 @@ import 'package:ecommerce/components/default_button.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/screens/sign_in/sign_in_screen.dart';
 import 'package:ecommerce/screens/splash/components/splash_content.dart';
+import 'package:ecommerce/services/shared_preference_helper.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -39,8 +40,8 @@ class _BodyState extends State<Body> {
               child: PageView.builder(
                 itemCount: splashData.length,
                 itemBuilder: (context, index) => SplashContent(
-                  image: splashData[index]['image'],
-                  text: splashData[index]['text'],
+                  image: splashData[index]['image']!,
+                  text: splashData[index]['text']!,
                 ),
                 onPageChanged: (value) => {
                   setState(() {
@@ -85,7 +86,7 @@ class _BodyState extends State<Body> {
     );
   }
 
-  AnimatedContainer buildDot({int index}) {
+  AnimatedContainer buildDot({required int index}) {
     return AnimatedContainer(
       margin: EdgeInsets.only(right: 5),
       width: currentPage == index ? 20 : 6,

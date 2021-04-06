@@ -4,7 +4,7 @@ import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteItem extends StatelessWidget {
-  const FavoriteItem({Key key, @required this.product}) : super(key: key);
+  const FavoriteItem({Key? key, required this.product}) : super(key: key);
 
   final Product product;
 

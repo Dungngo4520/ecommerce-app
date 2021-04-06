@@ -4,10 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileMenu extends StatelessWidget {
   const ProfileMenu({
-    Key key,
-    @required this.text,
-    @required this.icon,
-    @required this.onPressed,
+    Key? key,
+    required this.text,
+    required this.icon,
+    required this.onPressed,
   }) : super(key: key);
 
   final String text, icon;

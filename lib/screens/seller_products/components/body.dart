@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (demoProducts == null) {
+    if (demoProducts.length == 0) {
       return Center(
         child: Text(
           "Nothing here. Press the add \"+\" button below to start adding more item.",

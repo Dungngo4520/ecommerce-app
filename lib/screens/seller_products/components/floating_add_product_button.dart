@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class FloatingAddProductButton extends StatelessWidget {
   const FloatingAddProductButton({
-    Key key,
-    @required this.onPressed,
+    Key? key,
+    required this.onPressed,
   }) : super(key: key);
 
   final GestureTapCallback onPressed;

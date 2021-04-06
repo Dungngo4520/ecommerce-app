@@ -10,8 +10,7 @@ class AuthMethods {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Future getCurrentUser() async {
-    // ignore: await_only_futures
-    return await auth.currentUser;
+    return auth.currentUser;
   }
 
   createUserWithUserData(BuildContext context, List<String> userData) async {
@@ -19,34 +18,31 @@ class AuthMethods {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: userData[0], password: userData[1]);
-      if (userCredential != null) {
-        User userDetails = userCredential.user;
-        SharedPreferenceHelper().saveUserId(userDetails.uid);
-        SharedPreferenceHelper()
-            .saveUserName(userDetails.email.replaceAll(new RegExp(r'@.+'), ''));
-        SharedPreferenceHelper().saveUserEmail(userDetails.email);
-        String displayName = userData[2] + " " + userData[3];
-        SharedPreferenceHelper().saveUserDisplayName(displayName);
-        SharedPreferenceHelper().saveUserPhoneNumber(userData[4]);
-        SharedPreferenceHelper().saveUserPhotoURL(userData[5]);
+      User userDetails = userCredential.user!;
+      SharedPreferenceHelper().saveUserId(userDetails.uid);
+      SharedPreferenceHelper()
+          .saveUserName(userDetails.email!.replaceAll(new RegExp(r'@.+'), ''));
+      SharedPreferenceHelper().saveUserEmail(userDetails.email!);
+      String displayName = userData[2] + " " + userData[3];
+      SharedPreferenceHelper().saveUserDisplayName(displayName);
+      SharedPreferenceHelper().saveUserPhoneNumber(userData[4]);
+      SharedPreferenceHelper().saveUserPhotoURL(userData[5]);
 
-        Map<String, dynamic> userInfo = {
-          'email': userDetails.email,
-          'username': userDetails.email.replaceAll(new RegExp(r'@.+'), ''),
-          'name': displayName,
-          'photoURL': '',
-          'phone': userData[4],
-          'address': userData[5],
-        };
-        DatabaseMethods().addUserInfoToDB(userDetails.uid, userInfo).then((_) {
-          Navigator.pushReplacementNamed(context, HomeScreen.route);
-        });
-        return true;
-      }
-      return false;
+      Map<String, dynamic> userInfo = {
+        'email': userDetails.email,
+        'username': userDetails.email!.replaceAll(new RegExp(r'@.+'), ''),
+        'name': displayName,
+        'photoURL': '',
+        'phone': userData[4],
+        'address': userData[5],
+      };
+      DatabaseMethods().addUserInfoToDB(userDetails.uid, userInfo).then((_) {
+        Navigator.pushReplacementNamed(context, HomeScreen.route);
+      });
+      return true;
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.message),
+        content: Text(e.message!),
       ));
       return false;
     }
@@ -57,24 +53,22 @@ class AuthMethods {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      if (userCredential != null) {
-        User userDetails = userCredential.user;
-        SharedPreferenceHelper().saveUserId(userDetails.uid);
-        SharedPreferenceHelper()
-            .saveUserName(userDetails.email.replaceAll(new RegExp(r'@.+'), ''));
-        SharedPreferenceHelper().saveUserEmail(userDetails.email);
-        SharedPreferenceHelper()
-            .saveUserDisplayName(userDetails.displayName ?? "");
-        SharedPreferenceHelper().saveUserPhotoURL(userDetails.photoURL);
-        SharedPreferenceHelper()
-            .saveUserPhoneNumber(userDetails.phoneNumber ?? "");
+      User userDetails = userCredential.user!;
+      SharedPreferenceHelper().saveUserId(userDetails.uid);
+      SharedPreferenceHelper()
+          .saveUserName(userDetails.email!.replaceAll(new RegExp(r'@.+'), ''));
+      SharedPreferenceHelper().saveUserEmail(userDetails.email!);
+      SharedPreferenceHelper()
+          .saveUserDisplayName(userDetails.displayName ?? "");
+      SharedPreferenceHelper().saveUserPhotoURL(userDetails.photoURL ?? "");
+      SharedPreferenceHelper()
+          .saveUserPhoneNumber((userDetails.phoneNumber ?? ""));
 
-        Navigator.pushReplacementNamed(context, HomeScreen.route);
-        return true;
-      }
+      Navigator.pushReplacementNamed(context, HomeScreen.route);
+      return true;
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.message),
+        content: Text(e.message!),
       ));
       return false;
     }
@@ -82,48 +76,45 @@ class AuthMethods {
 
   signInWithGoogle(BuildContext context) async {
     try {
-      final GoogleSignInAccount googleSignInAccount =
+      final GoogleSignInAccount? googleSignInAccount =
           await GoogleSignIn().signIn();
 
       final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication;
+          await googleSignInAccount!.authentication;
 
-      final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+      final OAuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleSignInAuthentication.idToken,
         accessToken: googleSignInAuthentication.accessToken,
       );
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
-      User userDetails = userCredential.user;
+      User userDetails = userCredential.user!;
 
-      if (userCredential != null) {
-        SharedPreferenceHelper().saveUserId(userDetails.uid);
-        SharedPreferenceHelper()
-            .saveUserName(userDetails.email.replaceAll(new RegExp(r'@.+'), ''));
-        SharedPreferenceHelper().saveUserEmail(userDetails.email);
-        SharedPreferenceHelper().saveUserDisplayName(userDetails.displayName);
-        SharedPreferenceHelper().saveUserPhotoURL(userDetails.photoURL);
-        SharedPreferenceHelper()
-            .saveUserPhoneNumber(userDetails.phoneNumber ?? "");
+      SharedPreferenceHelper().saveUserId(userDetails.uid);
+      SharedPreferenceHelper()
+          .saveUserName(userDetails.email!.replaceAll(new RegExp(r'@.+'), ''));
+      SharedPreferenceHelper().saveUserEmail(userDetails.email!);
+      SharedPreferenceHelper().saveUserDisplayName(userDetails.displayName!);
+      SharedPreferenceHelper().saveUserPhotoURL(userDetails.photoURL!);
+      SharedPreferenceHelper()
+          .saveUserPhoneNumber(userDetails.phoneNumber ?? "");
 
-        Map<String, dynamic> userInfo = {
-          'email': userDetails.email,
-          'username': userDetails.email.replaceAll(new RegExp(r'@.+'), ''),
-          'name': userDetails.displayName,
-          'photoURL': userDetails.photoURL,
-          'phone': userDetails.phoneNumber,
-          'address': '',
-        };
-        DatabaseMethods().addUserInfoToDB(userDetails.uid, userInfo).then((_) {
-          Navigator.pushReplacementNamed(context, HomeScreen.route);
-        });
-        return true;
-      }
-      return false;
+      Map<String, dynamic> userInfo = {
+        'email': userDetails.email,
+        'username': userDetails.email!.replaceAll(new RegExp(r'@.+'), ''),
+        'name': userDetails.displayName,
+        'photoURL': userDetails.photoURL,
+        'phone': userDetails.phoneNumber,
+        'address': '',
+      };
+      DatabaseMethods().addUserInfoToDB(userDetails.uid, userInfo).then((_) {
+        Navigator.pushReplacementNamed(context, HomeScreen.route);
+      });
+      return true;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.message),
+        content: Text(e.toString()),
       ));
       return false;
     }
@@ -131,7 +122,23 @@ class AuthMethods {
 
   Future signOut() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.clear();
+    await preferences.remove('USERIDKEY');
+    await preferences.remove('USERNAMEKEY');
+    await preferences.remove('USERDISPLAYNAMEKEY');
+    await preferences.remove('USEREMAILKEY');
+    await preferences.remove('USERPHOTOURLKEY');
+    await preferences.remove('USERPHONENUMBERKEY');
+    await preferences.remove('USERADDRESSKEY');
     await auth.signOut();
   }
 }
+
+// static String userIdKey = 'USERIDKEY';
+//   static String userNameKey = 'USERNAMEKEY';
+//   static String userDisplayNameKey = 'USERDISPLAYNAMEKEY';
+//   static String userEmailKey = 'USEREMAILKEY';
+//   static String userPhotoURLKey = 'USERPHOTOURLKEY';
+//   static String userPhoneNumberKey = 'USERPHONENUMBERKEY';
+//   static String userAddressKey = 'USERADDRESSKEY';
+//   static String signInEmailInputKey = 'SIGNINEMAILINPUTKEY';
+//   static String signInPasswordInputKey = 'SIGNINPASSWORDINPUTKEY';

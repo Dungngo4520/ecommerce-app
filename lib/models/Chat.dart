@@ -2,10 +2,10 @@ class Chat {
   final String name, lastMessage, image, time;
 
   Chat({
-    this.name,
-    this.lastMessage,
-    this.image,
-    this.time,
+    required this.name,
+    required this.lastMessage,
+    required this.image,
+    required this.time,
   });
 }
 

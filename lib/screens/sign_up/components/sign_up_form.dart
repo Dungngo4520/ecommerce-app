@@ -13,7 +13,7 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  String email, password, confirmPassword;
+  late String email, password, confirmPassword;
   List<String> errors = [];
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _SignUpFormState extends State<SignUpForm> {
           DefaultButton(
             text: 'Register',
             onPressed: () {
-              if (_formKey.currentState.validate()) {
+              if (_formKey.currentState!.validate()) {
                 Navigator.pushReplacementNamed(
                     context, CompleteProfileScreen.route,
                     arguments: [email, password]);
@@ -45,7 +45,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      onSaved: (newValue) => email = newValue,
+      onSaved: (newValue) => email = newValue!,
       keyboardType: TextInputType.emailAddress,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(cEmailNullError)) {
@@ -62,7 +62,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty && !errors.contains(cEmailNullError)) {
+        if (value!.isEmpty && !errors.contains(cEmailNullError)) {
           setState(() {
             errors.add(cEmailNullError);
           });
@@ -86,7 +86,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      onSaved: (newValue) => password = newValue,
+      onSaved: (newValue) => password = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(cPasswordNullError)) {
           setState(() {
@@ -101,7 +101,7 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty && !errors.contains(cPasswordNullError)) {
+        if (value!.isEmpty && !errors.contains(cPasswordNullError)) {
           setState(() {
             errors.add(cPasswordNullError);
           });
@@ -126,7 +126,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildConfirmPasswordFormField() {
     return TextFormField(
-      onSaved: (newValue) => confirmPassword = newValue,
+      onSaved: (newValue) => confirmPassword = newValue!,
       onChanged: (value) {
         if (password == confirmPassword) {
           setState(() {
@@ -137,13 +137,13 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return "This field must be filled";
         } else if (password != value && !errors.contains(cPasswordMatchError)) {
           setState(() {
             errors.add(cPasswordMatchError);
-            return cPasswordMatchError;
           });
+          return cPasswordMatchError;
         }
         return null;
       },

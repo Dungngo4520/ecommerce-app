@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class PopularProducts extends StatelessWidget {
   const PopularProducts({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

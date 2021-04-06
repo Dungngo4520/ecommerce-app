@@ -6,8 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class SellerBottomNavBar extends StatelessWidget {
   const SellerBottomNavBar({
-    Key key,
-    @required this.selectedMenu,
+    Key? key,
+    required this.selectedMenu,
   }) : super(key: key);
 
   final MenuState selectedMenu;

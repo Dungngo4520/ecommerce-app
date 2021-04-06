@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 class CartItemCard extends StatelessWidget {
   const CartItemCard({
-    Key key,
-    @required this.cart,
+    Key? key,
+    required this.cart,
   }) : super(key: key);
 
   final Cart cart;

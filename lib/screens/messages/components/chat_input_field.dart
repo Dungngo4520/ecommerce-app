@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ChatInputField extends StatelessWidget {
   const ChatInputField({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

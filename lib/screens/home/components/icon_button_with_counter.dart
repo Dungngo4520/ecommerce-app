@@ -5,10 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class IconButtonWithCounter extends StatelessWidget {
   const IconButtonWithCounter({
-    Key key,
-    @required this.image,
+    Key? key,
+    required this.image,
     this.count = 0,
-    @required this.onTap,
+    required this.onTap,
   }) : super(key: key);
 
   final String image;

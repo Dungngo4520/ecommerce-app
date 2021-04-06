@@ -38,7 +38,7 @@ class CartScreen extends StatelessWidget {
 
 class CheckOutCard extends StatelessWidget {
   const CheckOutCard({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -98,7 +98,7 @@ class CheckOutCard extends StatelessWidget {
                     children: [
                       TextSpan(
                         text:
-                            '\$${demoCarts.fold(0, (previousValue, element) => previousValue + element.product.price)}',
+                            '\$${demoCarts.fold(0, (previousValue, element) => (previousValue! as double) + element.product.price)}',
                         style: TextStyle(fontSize: 16, color: Colors.black87),
                       ),
                     ],

@@ -46,7 +46,7 @@ class Body extends StatelessWidget {
           tween: Tween(begin: 30.0, end: 0),
           duration: Duration(seconds: 30),
           builder: (context, value, child) => Text(
-            "00:${value.toInt()}",
+            "00:${value!}",
             style: TextStyle(color: cPrimaryColor),
           ),
           onEnd: () {},

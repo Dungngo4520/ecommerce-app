@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 class ColorDots extends StatefulWidget {
   const ColorDots({
-    Key key,
-    @required this.product,
+    Key? key,
+    required this.product,
   }) : super(key: key);
 
   final Product product;

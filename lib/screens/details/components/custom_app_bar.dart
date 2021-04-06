@@ -1,15 +1,16 @@
-import 'package:ecommerce/components/rounded_icon_button.dart';
-import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:ecommerce/components/rounded_icon_button.dart';
+import 'package:ecommerce/size_config.dart';
 
 class CustomAppBar extends PreferredSize {
   final double rating;
 
-  CustomAppBar(this.rating);
-
-  @override
-  Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
+  CustomAppBar({required this.rating})
+      : super(
+            child: AppBar(),
+            preferredSize: Size.fromHeight(AppBar().preferredSize.height));
 
   @override
   Widget build(BuildContext context) {

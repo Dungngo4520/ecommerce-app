@@ -11,8 +11,9 @@ class CompleteProfileScreen extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      body:
-          Body(userEmailAndPassword: ModalRoute.of(context).settings.arguments),
+      body: Body(
+          userEmailAndPassword:
+              ModalRoute.of(context)!.settings.arguments as List<String>),
     );
   }
 }

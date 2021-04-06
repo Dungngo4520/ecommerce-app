@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class CompleteProfileForm extends StatefulWidget {
   final List<String> userEmailAndPassword;
 
-  const CompleteProfileForm({Key key, @required this.userEmailAndPassword})
+  const CompleteProfileForm({Key? key, required this.userEmailAndPassword})
       : super(key: key);
 
   @override
@@ -20,10 +20,10 @@ class CompleteProfileForm extends StatefulWidget {
 class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
-  String firstName, lastName, phoneNumber, address;
+  late String firstName, lastName, phoneNumber, address;
   bool loading = false;
 
-  addError({String error}) {
+  addError({required String error}) {
     if (!errors.contains(error)) {
       setState(() {
         errors.add(error);
@@ -31,7 +31,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     }
   }
 
-  removeError({String error}) {
+  removeError({required String error}) {
     if (errors.contains(error)) {
       setState(() {
         errors.remove(error);
@@ -62,7 +62,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
               DefaultButton(
                 text: "Continue",
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {
+                  if (_formKey.currentState!.validate()) {
                     if (!await AuthMethods().createUserWithUserData(context, [
                       ...widget.userEmailAndPassword,
                       firstName,
@@ -90,7 +90,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   TextFormField buildAddressFormField() {
     return TextFormField(
-      onSaved: (newValue) => address = newValue,
+      onSaved: (newValue) => address = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: cAddressNullError);
@@ -99,7 +99,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           addError(error: cAddressNullError);
           return "This field must be filled";
         }
@@ -116,7 +116,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   TextFormField buildPhoneNumberFormField() {
     return TextFormField(
       keyboardType: TextInputType.phone,
-      onSaved: (newValue) => phoneNumber = newValue,
+      onSaved: (newValue) => phoneNumber = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: cPhoneNumberNullError);
@@ -125,7 +125,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           addError(error: cPhoneNumberNullError);
           return "This field must be filled";
         }
@@ -140,7 +140,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   TextFormField buildLastNameFormField() {
     return TextFormField(
-      onSaved: (newValue) => lastName = newValue,
+      onSaved: (newValue) => lastName = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: cNameNullError);
@@ -149,7 +149,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           addError(error: cNameNullError);
           return "This field must be filled";
         }
@@ -164,7 +164,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   TextFormField buildFirstNameFormField() {
     return TextFormField(
-      onSaved: (newValue) => firstName = newValue,
+      onSaved: (newValue) => firstName = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: cNameNullError);
@@ -173,7 +173,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           addError(error: cNameNullError);
           return "This field must be filled";
         }

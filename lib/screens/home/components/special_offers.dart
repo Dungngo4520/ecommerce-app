@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class SpecialOffers extends StatelessWidget {
   const SpecialOffers({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -43,11 +43,11 @@ class SpecialOffers extends StatelessWidget {
 
 class SpecialOfferCard extends StatelessWidget {
   const SpecialOfferCard({
-    Key key,
-    @required this.category,
-    @required this.image,
-    @required this.numberOfBrands,
-    @required this.onTap,
+    Key? key,
+    required this.category,
+    required this.image,
+    required this.numberOfBrands,
+    required this.onTap,
   }) : super(key: key);
 
   final String category, image;

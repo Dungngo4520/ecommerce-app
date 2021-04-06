@@ -6,10 +6,10 @@ class OrderItem {
   final Color color;
 
   OrderItem({
-    @required this.orderItemId,
-    @required this.orderId,
-    @required this.productId,
-    @required this.amount,
-    @required this.color,
+    required this.orderItemId,
+    required this.orderId,
+    required this.productId,
+    required this.amount,
+    required this.color,
   });
 }

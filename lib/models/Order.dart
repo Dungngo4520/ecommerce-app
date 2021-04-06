@@ -10,13 +10,13 @@ class Order {
   final OrderState status;
 
   Order({
-    @required this.sellerId,
-    @required this.orderId,
-    @required this.address,
-    @required this.created,
-    @required this.status,
-    @required this.orderItems,
-    @required this.buyerId,
+    required this.sellerId,
+    required this.orderId,
+    required this.address,
+    required this.created,
+    required this.status,
+    required this.orderItems,
+    required this.buyerId,
   });
 }
 

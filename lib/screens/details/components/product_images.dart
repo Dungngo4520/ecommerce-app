@@ -5,8 +5,8 @@ import 'package:ecommerce/constants.dart';
 
 class ProductImages extends StatefulWidget {
   const ProductImages({
-    Key key,
-    @required this.product,
+    Key? key,
+    required this.product,
   }) : super(key: key);
 
   final Product product;

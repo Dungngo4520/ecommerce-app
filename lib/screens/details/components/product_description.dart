@@ -6,9 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductDescription extends StatelessWidget {
   const ProductDescription({
-    Key key,
-    @required this.product,
-    @required this.onTapSeeMore,
+    Key? key,
+    required this.product,
+    required this.onTapSeeMore,
   }) : super(key: key);
 
   final Product product;

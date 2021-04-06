@@ -50,7 +50,7 @@ class ForgotPasswordForm extends StatefulWidget {
 
 class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   final _formKey = GlobalKey<FormState>();
-  String email;
+  late String email;
   List<String> errors = [];
 
   @override
@@ -63,7 +63,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
             height: getProportionateScreenHeight(20),
           ),
           TextFormField(
-            onSaved: (newValue) => email = newValue,
+            onSaved: (newValue) => email = newValue!,
             keyboardType: TextInputType.emailAddress,
             onChanged: (value) {
               if (value.isNotEmpty && errors.contains(cEmailNullError)) {
@@ -79,7 +79,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
               return null;
             },
             validator: (value) {
-              if (value.isEmpty && !errors.contains(cEmailNullError)) {
+              if (value!.isEmpty && !errors.contains(cEmailNullError)) {
                 setState(() {
                   errors.add(cEmailNullError);
                 });
@@ -104,7 +104,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
           DefaultButton(
             text: 'Continue',
             onPressed: () {
-              if (_formKey.currentState.validate()) {}
+              if (_formKey.currentState!.validate()) {}
             },
           ),
           SizedBox(

@@ -59,47 +59,47 @@ class SharedPreferenceHelper {
   }
 
   // get
-  Future<String> getUserId() async {
+  Future<String?> getUserId() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userIdKey);
   }
 
-  Future<String> getUserName() async {
+  Future<String?> getUserName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userNameKey);
   }
 
-  Future<String> getUserDisplayName() async {
+  Future<String?> getUserDisplayName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userDisplayNameKey);
   }
 
-  Future<String> getUserEmail() async {
+  Future<String?> getUserEmail() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userEmailKey);
   }
 
-  Future<String> getUserPhotoURL() async {
+  Future<String?> getUserPhotoURL() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userPhotoURLKey);
   }
 
-  Future<String> getUserPhoneNumber() async {
+  Future<String?> getUserPhoneNumber() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userPhoneNumberKey);
   }
 
-  Future<String> getUserAddress() async {
+  Future<String?> getUserAddress() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(userAddressKey);
   }
 
-  Future<String> getSignInEmailInput() async {
+  Future<String?> getSignInEmailInput() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(signInEmailInputKey);
   }
 
-  Future<String> getSignInPasswordInput() async {
+  Future<String?> getSignInPasswordInput() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.getString(signInPasswordInputKey);
   }

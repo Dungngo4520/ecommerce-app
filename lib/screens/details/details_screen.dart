@@ -8,11 +8,11 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductDetailsAgrument agrument =
-        ModalRoute.of(context).settings.arguments;
+        ModalRoute.of(context)!.settings.arguments as ProductDetailsAgrument;
 
     return Scaffold(
       backgroundColor: Color(0xFFF5F6F9),
-      appBar: CustomAppBar(agrument.product.rating),
+      appBar: CustomAppBar(rating: agrument.product.rating),
       body: Body(product: agrument.product),
     );
   }
@@ -21,5 +21,5 @@ class DetailsScreen extends StatelessWidget {
 class ProductDetailsAgrument {
   final Product product;
 
-  ProductDetailsAgrument({@required this.product});
+  ProductDetailsAgrument({required this.product});
 }

@@ -12,9 +12,9 @@ class OTPForm extends StatefulWidget {
 
 class _OTPFormState extends State<OTPForm> {
   final _formKey = GlobalKey<FormState>();
-  FocusNode pin2FocusNode;
-  FocusNode pin3FocusNode;
-  FocusNode pin4FocusNode;
+  late FocusNode pin2FocusNode;
+  late FocusNode pin3FocusNode;
+  late FocusNode pin4FocusNode;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _OTPFormState extends State<OTPForm> {
     super.dispose();
   }
 
-  void nextPin({String value, FocusNode focusNode}) {
+  void nextPin({required String value, required FocusNode focusNode}) {
     if (value.length == 1) {
       focusNode.requestFocus();
     }
@@ -124,7 +124,7 @@ class _OTPFormState extends State<OTPForm> {
           DefaultButton(
             text: 'Continue',
             onPressed: () {
-              if (_formKey.currentState.validate()) {
+              if (_formKey.currentState!.validate()) {
                 Navigator.pushReplacementNamed(context, HomeScreen.route);
               }
             },

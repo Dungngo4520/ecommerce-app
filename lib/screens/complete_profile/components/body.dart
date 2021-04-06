@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class Body extends StatelessWidget {
   final List<String> userEmailAndPassword;
 
-  const Body({Key key, @required this.userEmailAndPassword}) : super(key: key);
+  const Body({Key? key, required this.userEmailAndPassword}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

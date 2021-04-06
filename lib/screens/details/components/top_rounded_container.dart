@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class TopRoundedCorner extends StatelessWidget {
   const TopRoundedCorner({
-    Key key,
-    @required this.color,
-    @required this.child,
+    Key? key,
+    required this.color,
+    required this.child,
   }) : super(key: key);
 
   final Color color;

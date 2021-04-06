@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class RoundedIconButton extends StatelessWidget {
   const RoundedIconButton({
-    Key key,
-    @required this.iconData,
-    @required this.onTap,
+    Key? key,
+    required this.iconData,
+    required this.onTap,
   }) : super(key: key);
 
   final IconData iconData;

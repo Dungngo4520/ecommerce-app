@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfilePicture extends StatelessWidget {
   const ProfilePicture({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

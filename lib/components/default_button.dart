@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class DefaultButton extends StatelessWidget {
   const DefaultButton({
-    Key key,
-    this.text,
-    this.onPressed,
+    Key? key,
+    required this.text,
+    required this.onPressed,
   }) : super(key: key);
-  final String text;
-  final Function onPressed;
+  final String/*!*/ text;
+  final Function onPressed ;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class DefaultButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         color: cPrimaryColor,
-        onPressed: onPressed,
+        onPressed: onPressed as void Function()?,
         child: Text(
           text,
           style: TextStyle(

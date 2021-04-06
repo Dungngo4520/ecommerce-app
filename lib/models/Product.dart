@@ -9,13 +9,13 @@ class Product {
   final String ownerId;
 
   Product({
-    @required this.ownerId,
-    @required this.title,
-    @required this.description,
-    @required this.images,
-    @required this.colors,
-    @required this.price,
-    @required this.id,
+    required this.ownerId,
+    required this.title,
+    required this.description,
+    required this.images,
+    required this.colors,
+    required this.price,
+    required this.id,
     this.isPopular = false,
     this.rating = 0,
     this.isFavorite = false,

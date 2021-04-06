@@ -1,20 +1,19 @@
 import 'package:ecommerce/models/Order.dart';
 import 'package:ecommerce/models/Product.dart';
-import 'package:flutter/material.dart';
 
 class User {
   final String id, email, name, phone, address;
   final List<String> orderIds, sellerOrderIds, sellerProductIds;
 
   User({
-    @required this.sellerProductIds,
-    @required this.orderIds,
-    @required this.sellerOrderIds,
-    @required this.id,
-    @required this.email,
-    @required this.name,
-    @required this.phone,
-    @required this.address,
+    required this.sellerProductIds,
+    required this.orderIds,
+    required this.sellerOrderIds,
+    required this.id,
+    required this.email,
+    required this.name,
+    required this.phone,
+    required this.address,
   });
 }
 

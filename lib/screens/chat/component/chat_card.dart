@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class ChatCard extends StatelessWidget {
   const ChatCard({
-    Key key,
-    @required this.chat,
-    @required this.onTap,
+    Key? key,
+    required this.chat,
+    required this.onTap,
   }) : super(key: key);
 
   final Chat chat;

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class TextMessage extends StatelessWidget {
   const TextMessage({
-    Key key,
-    @required this.message,
+    Key? key,
+    required this.message,
   }) : super(key: key);
 
   final ChatMessage message;

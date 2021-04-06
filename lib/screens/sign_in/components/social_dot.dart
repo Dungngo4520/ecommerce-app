@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class SocialDot extends StatelessWidget {
   const SocialDot({
-    Key key,
-    this.icon,
-    this.onPressed,
+    Key? key,
+    required this.icon,
+    required this.onPressed,
   }) : super(key: key);
 
   final String icon;
@@ -15,7 +15,7 @@ class SocialDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: onPressed as void Function()?,
       child: Container(
         margin: EdgeInsets.all(getProportionateScreenWidth(10)),
         alignment: Alignment.center,

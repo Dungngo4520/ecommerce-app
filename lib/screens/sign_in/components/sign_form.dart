@@ -23,9 +23,10 @@ class _SignFormState extends State<SignForm> {
   bool loading = false;
 
   getSaveInput() async {
-    emailController.text = await SharedPreferenceHelper().getSignInEmailInput();
+    emailController.text =
+        (await SharedPreferenceHelper().getSignInEmailInput())!;
     passwordController.text =
-        await SharedPreferenceHelper().getSignInPasswordInput();
+        (await SharedPreferenceHelper().getSignInPasswordInput())!;
     setState(() {});
   }
 
@@ -58,7 +59,7 @@ class _SignFormState extends State<SignForm> {
                         activeColor: cPrimaryColor,
                         onChanged: (value) async {
                           setState(() {
-                            inputRemember = value;
+                            inputRemember = value!;
                           });
                         },
                       ),
@@ -81,11 +82,11 @@ class _SignFormState extends State<SignForm> {
               DefaultButton(
                 text: 'Continue',
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {
+                  if (_formKey.currentState!.validate()) {
                     setState(() {
                       loading = true;
                     });
-                    _formKey.currentState.save();
+                    _formKey.currentState!.save();
                     await SharedPreferenceHelper().saveSignInEmailInput(
                         inputRemember ? emailController.text : "");
                     await SharedPreferenceHelper().saveSignInPasswordInput(
@@ -114,7 +115,7 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildEmailFormField() {
     return TextFormField(
       controller: emailController,
-      onSaved: (newValue) => emailController.text = newValue,
+      onSaved: (newValue) => emailController.text = newValue!,
       keyboardType: TextInputType.emailAddress,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(cEmailNullError)) {
@@ -130,7 +131,7 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty && !errors.contains(cEmailNullError)) {
+        if (value!.isEmpty && !errors.contains(cEmailNullError)) {
           setState(() {
             errors.add(cEmailNullError);
           });
@@ -159,7 +160,7 @@ class _SignFormState extends State<SignForm> {
   TextFormField buildPasswordFormField() {
     return TextFormField(
       controller: passwordController,
-      onSaved: (newValue) => passwordController.text = newValue,
+      onSaved: (newValue) => passwordController.text = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(cPasswordNullError)) {
           setState(() {
@@ -173,7 +174,7 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       validator: (value) {
-        if (value.isEmpty && !errors.contains(cPasswordNullError)) {
+        if (value!.isEmpty && !errors.contains(cPasswordNullError)) {
           setState(() {
             errors.add(cPasswordNullError);
           });
