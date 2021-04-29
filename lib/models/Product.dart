@@ -4,7 +4,8 @@ class Product {
   final String id, title, description;
   final List<String> images;
   final List<Color> colors;
-  final double rating, price;
+  final double rating;
+  int price;
   final bool isFavorite, isPopular;
   final String ownerId;
 
@@ -38,7 +39,7 @@ List<Product> demoProducts = [
       Colors.white,
     ],
     title: "Wireless Controller for PS4™",
-    price: 64.99,
+    price: 1500000,
     description: description,
     rating: 4.8,
     isFavorite: true,
@@ -57,7 +58,7 @@ List<Product> demoProducts = [
       Colors.white,
     ],
     title: "Nike Sport White - Man Pant",
-    price: 50.5,
+    price: 1150000,
     description: description,
     rating: 4.1,
     isPopular: true,
@@ -75,7 +76,7 @@ List<Product> demoProducts = [
       Colors.white,
     ],
     title: "Gloves XC Omega - Polygon",
-    price: 36.55,
+    price: 842000,
     description: description,
     rating: 4.1,
     isFavorite: true,
@@ -94,7 +95,7 @@ List<Product> demoProducts = [
       Colors.white,
     ],
     title: "Logitech Head",
-    price: 20.20,
+    price: 460000,
     description: description,
     rating: 4.1,
     isFavorite: true,
