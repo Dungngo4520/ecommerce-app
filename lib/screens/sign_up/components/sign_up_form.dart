@@ -13,7 +13,7 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  late String email, password, confirmPassword;
+  String email = "", password = "", confirmPassword = "";
   List<String> errors = [];
   @override
   Widget build(BuildContext context) {
@@ -86,6 +86,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      initialValue: "",
       onSaved: (newValue) => password = newValue!,
       onChanged: (value) {
         if (value.isNotEmpty && errors.contains(cPasswordNullError)) {
@@ -126,6 +127,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildConfirmPasswordFormField() {
     return TextFormField(
+      initialValue: "",
       onSaved: (newValue) => confirmPassword = newValue!,
       onChanged: (value) {
         if (password == confirmPassword) {

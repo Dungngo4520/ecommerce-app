@@ -1,28 +1,33 @@
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/screens/search/components/search_input_provider.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchField extends StatefulWidget {
-  const SearchField({
-    Key? key,
-  }) : super(key: key);
-
   @override
   _SearchFieldState createState() => _SearchFieldState();
 }
 
 class _SearchFieldState extends State<SearchField> {
-  late TextEditingController searchInputController = TextEditingController();
+  TextEditingController searchInputController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final seachInputState = Provider.of<SearchInputProvider>(context);
     return Container(
-      width: SizeConfig.screenWidth * 0.6,
+      margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: cSecondaryColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(15)),
       child: TextField(
         controller: searchInputController,
-        onEditingComplete: () {},
+        onEditingComplete: () {
+          seachInputState.searchInput = searchInputController.text;
+        },
+        onTap: () {
+          searchInputController.selection = TextSelection(
+              baseOffset: 0, extentOffset: searchInputController.text.length);
+        },
         decoration: InputDecoration(
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,

@@ -2,7 +2,6 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductDescription extends StatelessWidget {
   const ProductDescription({
@@ -26,29 +25,6 @@ class ProductDescription extends StatelessWidget {
           child: Text(
             product.title,
             style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Align(
-          alignment: Alignment.centerRight,
-          child: Container(
-            padding: EdgeInsets.all(getProportionateScreenWidth(15)),
-            width: getProportionateScreenWidth(64),
-            decoration: BoxDecoration(
-              color: product.isFavorite
-                  ? cPrimaryColor.withOpacity(0.1)
-                  : cSecondaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-              ),
-            ),
-            child: SvgPicture.asset(
-              product.isFavorite
-                  ? 'assets/icons/Heart Icon_2.svg'
-                  : 'assets/icons/Heart Icon.svg',
-              color: cPrimaryColor,
-            ),
           ),
         ),
         Padding(

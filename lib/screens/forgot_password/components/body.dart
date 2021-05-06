@@ -3,6 +3,7 @@ import 'package:ecommerce/components/default_button.dart';
 import 'package:ecommerce/components/form_error.dart';
 import 'package:ecommerce/screens/sign_in/components/no_account_text.dart';
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,7 @@ class ForgotPasswordForm extends StatefulWidget {
 
 class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   final _formKey = GlobalKey<FormState>();
-  late String email;
+  String email = "";
   List<String> errors = [];
 
   @override
@@ -76,6 +77,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                   errors.remove(cEmailInvalidError);
                 });
               }
+              email = value;
               return null;
             },
             validator: (value) {
@@ -104,7 +106,9 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
           DefaultButton(
             text: 'Continue',
             onPressed: () {
-              if (_formKey.currentState!.validate()) {}
+              if (_formKey.currentState!.validate()) {
+                AuthMethods().forgotPassword(context, email);
+              }
             },
           ),
           SizedBox(

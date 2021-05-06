@@ -1,3 +1,4 @@
+import 'package:ecommerce/screens/home/components/browse_product.dart';
 import 'package:ecommerce/screens/home/components/categories.dart';
 import 'package:ecommerce/screens/home/components/home_banner.dart';
 import 'package:ecommerce/screens/home/components/home_header.dart';
@@ -24,6 +25,7 @@ class Body extends StatelessWidget {
             SizedBox(height: getProportionateScreenWidth(30)),
             PopularProducts(),
             SizedBox(height: getProportionateScreenWidth(30)),
+            BrowseProduct()
           ],
         ),
       ),

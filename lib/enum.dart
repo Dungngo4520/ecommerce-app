@@ -1,6 +1,6 @@
 enum MenuState {
   home,
-  favorite,
+  search,
   message,
   profile,
   seller_product,

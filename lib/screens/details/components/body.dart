@@ -1,5 +1,6 @@
 import 'package:ecommerce/components/default_button.dart';
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/screens/details/components/color_dots.dart';
 import 'package:ecommerce/screens/details/components/product_description.dart';
@@ -10,15 +11,20 @@ import 'package:flutter/material.dart';
 
 class Body extends StatelessWidget {
   final Product product;
+  final String heroTag;
 
-  const Body({Key? key, required this.product}) : super(key: key);
+  const Body({Key? key, required this.product, required this.heroTag})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ProductImages(product: product),
+          ProductImages(
+            product: product,
+            heroTag: heroTag,
+          ),
           TopRoundedCorner(
             color: Colors.white,
             child: Column(
@@ -43,7 +49,10 @@ class Body extends StatelessWidget {
                           ),
                           child: DefaultButton(
                             text: 'Add to Cart',
-                            onPressed: () {},
+                            onPressed: () {
+                              demoCarts.add(
+                                  new Cart(product: product, numOfItems: 1));
+                            },
                           ),
                         ),
                       ),

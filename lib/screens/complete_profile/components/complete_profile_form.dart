@@ -41,7 +41,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.userEmailAndPassword);
     return Stack(
       clipBehavior: Clip.none,
       alignment: AlignmentDirectional.bottomCenter,
@@ -62,6 +61,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
               DefaultButton(
                 text: "Continue",
                 onPressed: () async {
+                  setState(() {
+                    loading = true;
+                  });
                   if (_formKey.currentState!.validate()) {
                     if (!await AuthMethods().createUserWithUserData(context, [
                       ...widget.userEmailAndPassword,
@@ -71,7 +73,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                       address,
                     ])) {
                       setState(() {
-                        loading = true;
+                        loading = false;
                       });
                     }
                   }

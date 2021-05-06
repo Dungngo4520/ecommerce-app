@@ -18,31 +18,34 @@ class CustomAppBar extends PreferredSize {
       child: Padding(
         padding:
             EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            RoundedIconButton(
-              iconData: Icons.arrow_back,
-              onTap: () => Navigator.pop(context),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
+        child: Container(
+          margin: EdgeInsets.only(top: getProportionateScreenHeight(20)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              RoundedIconButton(
+                iconData: Icons.arrow_back,
+                onTap: () => Navigator.pop(context),
               ),
-              child: Row(
-                children: [
-                  Text(
-                    rating.toString(),
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(width: 5),
-                  SvgPicture.asset('assets/icons/Star Icon.svg')
-                ],
-              ),
-            )
-          ],
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      rating.toString(),
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(width: 5),
+                    SvgPicture.asset('assets/icons/Star Icon.svg')
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

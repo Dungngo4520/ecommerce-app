@@ -4,7 +4,7 @@ import 'package:ecommerce/screens/cart/components/checkout_card.dart';
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatelessWidget {
-  static String route = 'cart';
+  static String route = '/cart';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

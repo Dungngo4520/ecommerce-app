@@ -36,7 +36,7 @@ class AuthMethods {
         'phone': userData[4],
         'address': userData[5],
       };
-      DatabaseMethods().addUserInfoToDB(userDetails.uid, userInfo).then((_) {
+      DatabaseMethods().setUserInfoToDB(userDetails.uid, userInfo).then((_) {
         Navigator.pushReplacementNamed(context, HomeScreen.route);
       });
       return true;
@@ -108,7 +108,7 @@ class AuthMethods {
         'phone': userDetails.phoneNumber,
         'address': '',
       };
-      DatabaseMethods().addUserInfoToDB(userDetails.uid, userInfo).then((_) {
+      DatabaseMethods().setUserInfoToDB(userDetails.uid, userInfo).then((_) {
         Navigator.pushReplacementNamed(context, HomeScreen.route);
       });
       return true;
@@ -131,7 +131,24 @@ class AuthMethods {
     await preferences.remove('USERADDRESSKEY');
     await auth.signOut();
   }
+
+  Future forgotPassword(BuildContext context, String email) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            "An email has been sent to you. Please open and follow the link to recover your password."),
+      ));
+      return true;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+      return false;
+    }
+  }
 }
+
 
 // static String userIdKey = 'USERIDKEY';
 //   static String userNameKey = 'USERNAMEKEY';

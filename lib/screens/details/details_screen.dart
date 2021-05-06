@@ -13,13 +13,17 @@ class DetailsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xFFF5F6F9),
       appBar: CustomAppBar(rating: agrument.product.rating),
-      body: Body(product: agrument.product),
+      body: Body(
+        product: agrument.product,
+        heroTag: agrument.heroTag,
+      ),
     );
   }
 }
 
 class ProductDetailsAgrument {
   final Product product;
+  final heroTag;
 
-  ProductDetailsAgrument({required this.product});
+  ProductDetailsAgrument({required this.product, required this.heroTag});
 }

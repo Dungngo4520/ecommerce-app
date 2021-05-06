@@ -1,9 +1,9 @@
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/enum.dart';
 import 'package:ecommerce/screens/chat/chat_screen.dart';
-import 'package:ecommerce/screens/favorite/favorite_screen.dart';
 import 'package:ecommerce/screens/home/home_screen.dart';
 import 'package:ecommerce/screens/profile/profile_screen.dart';
+import 'package:ecommerce/screens/search/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -61,18 +61,18 @@ class CustomBottomNavBar extends StatelessWidget {
               children: [
                 IconButton(
                   icon: SvgPicture.asset(
-                    'assets/icons/Heart Icon.svg',
-                    color: MenuState.favorite == selectedMenu
+                    'assets/icons/Search Icon.svg',
+                    color: MenuState.search == selectedMenu
                         ? cPrimaryColor
                         : cSecondaryColor,
                   ),
                   onPressed: () {
-                    if (selectedMenu != MenuState.favorite)
+                    if (selectedMenu != MenuState.search)
                       Navigator.pushReplacementNamed(
-                          context, FavoriteScreen.route);
+                          context, SearchScreen.route);
                   },
                 ),
-                Text("Favorite", style: TextStyle(fontSize: 12)),
+                Text("Search", style: TextStyle(fontSize: 12)),
               ],
             ),
             Column(

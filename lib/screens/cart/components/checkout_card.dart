@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:momo_vn/momo_vn.dart';
+import 'package:intl/intl.dart';
 
 class CheckOutCard extends StatefulWidget {
   const CheckOutCard({
@@ -52,6 +53,7 @@ class _CheckOutCardState extends State<CheckOutCard> {
   void _handlePaymentSuccess(PaymentResponse response) {
     setState(() {
       _momoPaymentResult = response;
+      demoCarts.clear();
       _setState();
     });
     Fluttertoast.showToast(
@@ -66,7 +68,31 @@ class _CheckOutCardState extends State<CheckOutCard> {
     });
     Fluttertoast.showToast(
         msg: "THẤT BẠI: " + response.message.toString(), timeInSecForIosWeb: 4);
-    print(_paymentStatus);
+  }
+
+  void onPresssed() {
+    try {
+      MomoPaymentInfo options = MomoPaymentInfo(
+          partner: 'merchant',
+          appScheme: "momomscv20210426",
+          amount: demoCarts.fold(
+              0,
+              (previousValue, element) =>
+                  previousValue + element.product.price * element.numOfItems),
+          description: 'Thanh toán đơn hàng',
+          merchantcode: 'MOMOMSCV20210426',
+          merchantname: "EMO Shopping",
+          merchantnamelabel: "EMO Shopping",
+          fee: 0,
+          username: '',
+          orderId: '1',
+          orderLabel: 'Thanh toán đơn hàng EMO Shopping',
+          extra: "",
+          isTestMode: true);
+      _momoPay.open(options);
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -126,7 +152,7 @@ class _CheckOutCardState extends State<CheckOutCard> {
                     children: [
                       TextSpan(
                         text:
-                            '${demoCarts.fold(0, (previousValue, element) => (previousValue! as int) + element.product.price)} ₫',
+                            '${NumberFormat(',###').format(demoCarts.fold(0, (previousValue, element) => (previousValue! as int) + element.product.price * element.numOfItems))} ₫',
                         style: TextStyle(fontSize: 16, color: Colors.black87),
                       ),
                     ],
@@ -134,33 +160,8 @@ class _CheckOutCardState extends State<CheckOutCard> {
                 ),
                 SizedBox(
                   width: getProportionateScreenWidth(190),
-                  child: DefaultButton(
-                    text: 'Check Out',
-                    onPressed: () {
-                      try {
-                        MomoPaymentInfo options = MomoPaymentInfo(
-                            merchantname: "EMO",
-                            appScheme: "momomscv20210426",
-                            merchantcode: 'MOMOMSCV20210426',
-                            amount: demoCarts.fold(
-                                0,
-                                (previousValue, element) =>
-                                    previousValue + element.product.price),
-                            orderId: '12321312',
-                            orderLabel: 'Gói dịch vụ ABCD',
-                            merchantnamelabel: "EMO Shopping",
-                            fee: 0,
-                            description: 'Thanh toan don hang',
-                            username: '091xxxx',
-                            partner: 'merchant',
-                            extra: "",
-                            isTestMode: true);
-                        _momoPay.open(options);
-                      } catch (e) {
-                        print(e.toString());
-                      }
-                    },
-                  ),
+                  child:
+                      DefaultButton(text: 'Check Out', onPressed: onPresssed),
                 )
               ],
             ),

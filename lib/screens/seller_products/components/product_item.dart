@@ -29,7 +29,7 @@ class ProductItems extends StatelessWidget {
                       margin: EdgeInsets.only(right: 5),
                       height: 50,
                       width: 50,
-                      child: Image.asset(product[index].images[0]),
+                      child: Image.network(product[index].images[0]),
                     ),
                   ),
                   DataCell(

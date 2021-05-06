@@ -22,9 +22,10 @@ dependencies:
     cupertino_icons: "^1.0.2"
     flutter_svg: ^0.21.0+1
     flutter_spinkit: ^5.0.0
-    momo_vn:
-        path: ../
+    momo_vn: ^1.0.4
     fluttertoast: ^8.0.6
+    http: ^0.13.3
+    provider: ^5.0.0
 
 dev_dependencies:
     flutter_test:

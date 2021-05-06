@@ -6,10 +6,12 @@ import 'package:ecommerce/constants.dart';
 class ProductImages extends StatefulWidget {
   const ProductImages({
     Key? key,
+    required this.heroTag,
     required this.product,
   }) : super(key: key);
 
   final Product product;
+  final String heroTag;
 
   @override
   _ProductImagesState createState() => _ProductImagesState();
@@ -24,10 +26,16 @@ class _ProductImagesState extends State<ProductImages> {
       children: [
         SizedBox(
           width: getProportionateScreenWidth(238),
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Image.asset(
-              widget.product.images[selectedImage],
+          child: Hero(
+            tag: widget.heroTag,
+            child: Material(
+              type: MaterialType.transparency,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Image.network(
+                  widget.product.images[selectedImage],
+                ),
+              ),
             ),
           ),
         ),
@@ -64,7 +72,7 @@ class _ProductImagesState extends State<ProductImages> {
               color:
                   selectedImage == index ? cPrimaryColor : Colors.transparent),
         ),
-        child: Image.asset(widget.product.images[index]),
+        child: Image.network(widget.product.images[index]),
       ),
     );
   }

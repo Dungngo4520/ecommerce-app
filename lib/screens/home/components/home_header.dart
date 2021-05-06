@@ -1,6 +1,7 @@
+import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/screens/cart/cart_screen.dart';
 import 'package:ecommerce/screens/home/components/icon_button_with_counter.dart';
-import 'package:ecommerce/screens/home/components/search_field.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +19,21 @@ class HomeHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SearchField(),
+          // SearchField(),
+          Container(
+            width: SizeConfig.screenWidth * 0.6,
+            child: Text(
+              'EMO Shopping',
+              style: TextStyle(
+                fontSize: getProportionateScreenWidth(24),
+                color: cPrimaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           IconButtonWithCounter(
             image: 'assets/icons/Cart Icon.svg',
+            count: demoCarts.length,
             onTap: () => Navigator.pushNamed(context, CartScreen.route),
           ),
           IconButtonWithCounter(
