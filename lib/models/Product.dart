@@ -44,8 +44,9 @@ class Product {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap({required bool includeProductId}) {
     return {
+      if (includeProductId) 'id': id,
       'description': description,
       'title': title,
       'images': images,
@@ -69,7 +70,7 @@ class Product {
     );
   }
 
-  String toJson() => json.encode(toMap());
+  String toJson() => json.encode(toMap(includeProductId: true));
 
   factory Product.fromJson(String source) =>
       Product.fromMap(json.decode(source));
