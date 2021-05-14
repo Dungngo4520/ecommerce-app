@@ -4,6 +4,7 @@ import 'package:ecommerce/screens/cart/components/cart_item_card.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -13,17 +14,18 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
+    List<Cart> cartList = Provider.of<List<Cart>>(context);
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: getProportionateScreenWidth(20),
       ),
       child: ListView.builder(
-        itemCount: demoCarts.length,
+        itemCount: cartList.length,
         itemBuilder: (context, index) => Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Dismissible(
             direction: DismissDirection.endToStart,
-            key: Key(demoCarts[index].product.id.toString()),
+            key: Key(cartList[index].productID),
             background: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
@@ -38,11 +40,11 @@ class _BodyState extends State<Body> {
               ),
             ),
             onDismissed: (direction) {
-              setState(() {
-                demoCarts.removeAt(index);
-              });
+              // setState(() {
+              //   cartList.removeAt(index);
+              // });
             },
-            child: CartItemCard(cart: demoCarts[index]),
+            child: CartItemCard(cart: cartList[index]),
           ),
         ),
       ),

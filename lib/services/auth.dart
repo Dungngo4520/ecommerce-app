@@ -9,8 +9,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthMethods {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future getCurrentUser() async {
+  Future<User?> getCurrentUser() async {
     return auth.currentUser;
+  }
+
+  Stream<User?> getOnAuthStateChange() {
+    return FirebaseAuth.instance.authStateChanges().map((event) => event);
   }
 
   createUserWithUserData(BuildContext context, List<String> userData) async {
@@ -36,7 +40,7 @@ class AuthMethods {
         'phone': userData[4],
         'address': userData[5],
       };
-      DatabaseMethods().setUserInfoToDB(userDetails.uid, userInfo).then((_) {
+      DatabaseMethods(uid: userDetails.uid).setUserInfoToDB(userInfo).then((_) {
         Navigator.pushReplacementNamed(context, HomeScreen.route);
       });
       return true;
@@ -108,7 +112,7 @@ class AuthMethods {
         'phone': userDetails.phoneNumber,
         'address': '',
       };
-      DatabaseMethods().setUserInfoToDB(userDetails.uid, userInfo).then((_) {
+      DatabaseMethods(uid: userDetails.uid).setUserInfoToDB(userInfo).then((_) {
         Navigator.pushReplacementNamed(context, HomeScreen.route);
       });
       return true;

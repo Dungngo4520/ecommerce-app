@@ -1,4 +1,5 @@
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/screens/details/details_screen.dart';
 import 'package:ecommerce/screens/search/components/search_input_provider.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 class SearchItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    List<Cart> cartList = Provider.of<List<Cart>>(context);
     final seachInputState = Provider.of<SearchInputProvider>(context);
     return seachInputState.searchInput == ""
         ? Expanded(
@@ -27,12 +29,19 @@ class SearchItems extends StatelessWidget {
                 ...List.generate(
                   demoProducts.length,
                   (index) => GestureDetector(
-                    onTap: () => Navigator.pushNamed(
+                    onTap: () => Navigator.push(
                       context,
-                      DetailsScreen.route,
-                      arguments: ProductDetailsAgrument(
-                        product: demoProducts[index],
-                        heroTag: demoProducts[index].id + 'search',
+                      MaterialPageRoute(
+                        builder: (context) => Provider(
+                          create: (context) => cartList,
+                          builder: (context, child) => DetailsScreen(),
+                        ),
+                        settings: RouteSettings(
+                          arguments: ProductDetailsAgrument(
+                            product: demoProducts[index],
+                            heroTag: demoProducts[index].id + 'search',
+                          ),
+                        ),
                       ),
                     ),
                     child: Hero(

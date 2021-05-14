@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/screens/details/details_screen.dart';
 import 'package:ecommerce/services/database.dart';
@@ -7,6 +7,7 @@ import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class BrowseProduct extends StatelessWidget {
   const BrowseProduct({
@@ -15,9 +16,11 @@ class BrowseProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<QueryDocumentSnapshot>>(
+    List<Cart> cartList = Provider.of<List<Cart>>(context);
+    final firestore = Provider.of<DatabaseMethods>(context);
+    return FutureBuilder<List<Product>>(
         initialData: [],
-        future: DatabaseMethods().getProducts(10).then((value) => value.docs),
+        future: firestore.getProducts(10),
         builder: (context, snapshot) {
           return SingleChildScrollView(
             padding: EdgeInsets.symmetric(
@@ -44,15 +47,19 @@ class BrowseProduct extends StatelessWidget {
                   ...List.generate(
                     snapshot.data!.length,
                     (index) => GestureDetector(
-                      onTap: () => Navigator.pushNamed(
+                      onTap: () => Navigator.push(
                         context,
-                        DetailsScreen.route,
-                        arguments: ProductDetailsAgrument(
-                          product: Product.fromMap({
-                            'id': snapshot.data![index].id,
-                            ...snapshot.data![index].data()
-                          }),
-                          heroTag: snapshot.data![index].id + 'browse',
+                        MaterialPageRoute(
+                          builder: (context) => Provider(
+                            create: (context) => cartList,
+                            builder: (context, child) => DetailsScreen(),
+                          ),
+                          settings: RouteSettings(
+                            arguments: ProductDetailsAgrument(
+                              product: snapshot.data![index],
+                              heroTag: snapshot.data![index].id + 'browse',
+                            ),
+                          ),
                         ),
                       ),
                       child: Hero(
@@ -66,7 +73,7 @@ class BrowseProduct extends StatelessWidget {
                                 height: getProportionateScreenWidth(100),
                                 width: getProportionateScreenWidth(100),
                                 child: Image.network(
-                                    snapshot.data![index].data()['images'][0]),
+                                    snapshot.data![index].images[0]),
                               ),
                               Expanded(
                                 child: Container(
@@ -78,8 +85,7 @@ class BrowseProduct extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        snapshot.data![index].data()['title'] ??
-                                            "",
+                                        snapshot.data![index].title,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: TextStyle(
@@ -95,8 +101,7 @@ class BrowseProduct extends StatelessWidget {
                                           Row(
                                             children: [
                                               Text(
-                                                snapshot.data![index]
-                                                    .data()['rating']
+                                                snapshot.data![index].rating
                                                     .toString(),
                                                 style: TextStyle(
                                                     fontWeight:
@@ -110,8 +115,7 @@ class BrowseProduct extends StatelessWidget {
                                           Text(
                                             NumberFormat(',###')
                                                     .format(snapshot
-                                                        .data![index]
-                                                        .data()['price'])
+                                                        .data![index].price)
                                                     .toString() +
                                                 '₫',
                                             overflow: TextOverflow.ellipsis,

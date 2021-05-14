@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/screens/details/details_screen.dart';
 import 'package:ecommerce/screens/home/components/product_card.dart';
@@ -6,6 +6,7 @@ import 'package:ecommerce/screens/home/components/section_title.dart';
 import 'package:ecommerce/services/database.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PopularProducts extends StatelessWidget {
   const PopularProducts({
@@ -14,9 +15,11 @@ class PopularProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<QueryDocumentSnapshot>>(
+    final firestore = Provider.of<DatabaseMethods>(context);
+    List<Cart> cartList = Provider.of<List<Cart>>(context);
+    return FutureBuilder<List<Product>>(
       initialData: [],
-      future: DatabaseMethods().getProducts(5).then((value) => value.docs),
+      future: firestore.getProducts(5),
       builder: (context, snapshot) => Column(
         children: [
           SectionTitle(text: 'Popular Products', onTap: () {}),
@@ -37,19 +40,20 @@ class PopularProducts extends StatelessWidget {
                   ...List.generate(
                     snapshot.data!.length,
                     (index) => ProductCard(
-                      product: Product.fromMap({
-                        'id': snapshot.data![index].id,
-                        ...snapshot.data![index].data()
-                      }),
-                      onTap: () => Navigator.pushNamed(
+                      product: snapshot.data![index],
+                      onTap: () => Navigator.push(
                         context,
-                        DetailsScreen.route,
-                        arguments: ProductDetailsAgrument(
-                          product: Product.fromMap({
-                            'id': snapshot.data![index].id,
-                            ...snapshot.data![index].data()
-                          }),
-                          heroTag: snapshot.data![index].id + 'popular',
+                        MaterialPageRoute(
+                          builder: (context) => Provider(
+                            create: (context) => cartList,
+                            builder: (context, child) => DetailsScreen(),
+                          ),
+                          settings: RouteSettings(
+                            arguments: ProductDetailsAgrument(
+                              product: snapshot.data![index],
+                              heroTag: snapshot.data![index].id + 'popular',
+                            ),
+                          ),
                         ),
                       ),
                     ),

@@ -8,6 +8,7 @@ import 'package:ecommerce/screens/details/components/product_images.dart';
 import 'package:ecommerce/screens/details/components/top_rounded_container.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatelessWidget {
   final Product product;
@@ -18,6 +19,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Cart> cartList = Provider.of<List<Cart>>(context);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -51,7 +53,7 @@ class Body extends StatelessWidget {
                             text: 'Add to Cart',
                             onPressed: () {
                               demoCarts.add(
-                                  new Cart(product: product, numOfItems: 1));
+                                  new Cart(productID: product.id, quantity: 1));
                             },
                           ),
                         ),
