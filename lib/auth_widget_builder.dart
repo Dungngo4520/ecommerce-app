@@ -1,3 +1,4 @@
+import 'package:ecommerce/models/UserData.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,15 +22,26 @@ class AuthWidgetBuilder extends StatelessWidget {
         if (user != null) {
           return MultiProvider(
             providers: [
-              StreamProvider<List<Cart>>.value(
-                value: DatabaseMethods(uid: user.uid).getCart(),
+              StreamProvider<List<Cart>>(
+                create: (context) => DatabaseMethods(uid: user.uid).getCart(),
                 initialData: [],
-                catchError: (context, error) => [],
               ),
               Provider<DatabaseMethods>(
                   create: (context) => DatabaseMethods(uid: user.uid)),
-              Provider<User>.value(value: user),
+              StreamProvider<UserData>(
+                  create: (context) => Stream.fromFuture(
+                      DatabaseMethods(uid: user.uid).getUserById(user.uid)),
+                  initialData: UserData(
+                    id: "",
+                    name: "",
+                    email: "",
+                    address: "",
+                    phone: "",
+                    photoURL: "",
+                    username: "",
+                  )),
             ],
+            builder: (context, child) => builder(context, snapshot),
             child: builder(context, snapshot),
           );
         }

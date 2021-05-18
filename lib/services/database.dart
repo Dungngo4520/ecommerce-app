@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
+import 'package:ecommerce/models/UserData.dart';
 
 class DatabaseMethods {
   final String uid;
@@ -14,11 +15,21 @@ class DatabaseMethods {
         .set(userInfo);
   }
 
-  Stream<QuerySnapshot> getUserByUsername(String username) {
-    return FirebaseFirestore.instance
+  Future<UserData> getUserById(String id) async {
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(id)
+        .get()
+        .then((value) => UserData.fromMap({'id': value.id, ...?value.data()}));
+  }
+
+  Future<UserData> getUserByUsername(String username) async {
+    return await FirebaseFirestore.instance
         .collection('users')
         .where(username, isEqualTo: username)
-        .snapshots();
+        .get()
+        .then((value) => UserData.fromMap(
+            {'id': value.docs.first.id, ...value.docs.first.data()}));
   }
 
   Future setProductToDB(
@@ -56,7 +67,9 @@ class DatabaseMethods {
         .doc(uid)
         .collection('carts')
         .snapshots()
-        .map((event) => event.docs.map((e) => Cart.fromMap(e.data())).toList());
+        .map((event) => event.docs
+            .map((e) => Cart.fromMap({'id': e.id, ...e.data()}))
+            .toList());
   }
 
   Future<List<Product>> getProductListInCart(List<Cart> cartList) async {
@@ -68,20 +81,21 @@ class DatabaseMethods {
     return productList;
   }
 
-  Future addToCart(Cart cart) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .collection('carts')
-        .add(cart.toMap());
-  }
-
-  Future updateCartByUserID(Cart cart) async {
+  Future updateCart(String cartId, Cart cart) async {
     return await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
         .collection('carts')
-        .doc()
+        .doc(cartId)
         .set(cart.toMap());
+  }
+
+  Future deleteCart(String cartId) async {
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('carts')
+        .doc(cartId)
+        .delete();
   }
 }
