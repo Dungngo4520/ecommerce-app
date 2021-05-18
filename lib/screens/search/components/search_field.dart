@@ -1,6 +1,5 @@
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Product.dart';
-import 'package:ecommerce/screens/search/components/search_input_provider.dart';
 import 'package:ecommerce/services/algolia_search.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ class _SearchFieldState extends State<SearchField> {
   FocusNode focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    final seachInputState = Provider.of<SearchInputProvider>(context);
+    final seachInputState = Provider.of<ValueNotifier<String>>(context);
     return Container(
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -28,7 +27,7 @@ class _SearchFieldState extends State<SearchField> {
           autofocus: true,
           controller: searchInputController,
           onEditingComplete: () async {
-            seachInputState.searchInput = searchInputController.text;
+            seachInputState.value = searchInputController.text;
             focusNode.unfocus();
           },
           onTap: () {

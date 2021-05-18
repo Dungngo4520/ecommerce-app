@@ -4,7 +4,6 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/screens/details/details_screen.dart';
-import 'package:ecommerce/screens/search/components/search_input_provider.dart';
 import 'package:ecommerce/services/algolia_search.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +15,8 @@ class SearchItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Cart> cartList = Provider.of<List<Cart>>(context);
-    final seachInputState = Provider.of<SearchInputProvider>(context);
-    if (seachInputState.searchInput == "") {
+    final seachInputState = Provider.of<ValueNotifier<String>>(context);
+    if (seachInputState.value == "") {
       return Expanded(
         child: Center(
           child: Text("Search for product"),
@@ -26,11 +25,12 @@ class SearchItems extends StatelessWidget {
     } else {
       return StreamBuilder<List<Product>>(
         stream: Stream.fromFuture(
-            AlgoliaSearch().searchProduct(seachInputState.searchInput)),
+            AlgoliaSearch().searchProduct(seachInputState.value)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isNotEmpty) {
               return SingleChildScrollView(
+                clipBehavior: Clip.none,
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(20)),
                 child: Column(
@@ -76,14 +76,16 @@ class SearchItems extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          snapshot.data![index].title,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            color: Colors.black,
+                                        Flexible(
+                                          child: Text(
+                                            snapshot.data![index].title,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                            ),
                                           ),
                                         ),
                                         Row(

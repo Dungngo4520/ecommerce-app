@@ -30,6 +30,8 @@
 .pub-cache/
 .pub/
 /build/
+lib/services/algolia_search.dart
+lib/services/algolia_admin.dart
 
 # Web related
 lib/generated_plugin_registrant.dart
