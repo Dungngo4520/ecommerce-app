@@ -34,6 +34,22 @@ class _ProductImagesState extends State<ProductImages> {
                 aspectRatio: 1,
                 child: Image.network(
                   widget.product.images[selectedImage],
+                  errorBuilder: (context, error, stackTrace) =>
+                      Icon(Icons.image),
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: cPrimaryColor,
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -72,7 +88,24 @@ class _ProductImagesState extends State<ProductImages> {
               color:
                   selectedImage == index ? cPrimaryColor : Colors.transparent),
         ),
-        child: Image.network(widget.product.images[index]),
+        child: Image.network(
+          widget.product.images[index],
+          errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+            return Center(
+              child: CircularProgressIndicator(
+                color: cPrimaryColor,
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

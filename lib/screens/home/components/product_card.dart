@@ -45,7 +45,26 @@ class ProductCard extends StatelessWidget {
                           color: cSecondaryColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: Image.network(product.images[0]),
+                        child: Image.network(
+                          product.images[0],
+                          errorBuilder: (context, error, stackTrace) =>
+                              Icon(Icons.image),
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: cPrimaryColor,
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ),

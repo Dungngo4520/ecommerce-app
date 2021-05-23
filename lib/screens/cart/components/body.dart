@@ -19,8 +19,9 @@ class _BodyState extends State<Body> {
       padding: EdgeInsets.symmetric(
         horizontal: getProportionateScreenWidth(20),
       ),
-      child: ListView.builder(
+      child: ListView.separated(
         itemCount: cartList.length,
+        separatorBuilder: (context, index) => Divider(height: 1),
         itemBuilder: (context, index) => Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Dismissible(

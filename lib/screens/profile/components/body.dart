@@ -4,10 +4,12 @@ import 'package:ecommerce/screens/seller_products/seller_products_screen.dart';
 import 'package:ecommerce/screens/sign_in/sign_in_screen.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthMethods>(context);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -26,8 +28,7 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: 'My Shop',
             icon: 'assets/icons/Shop Icon.svg',
-            onPressed: () =>
-                Navigator.pushNamed(context, SellerProductsScreen.route),
+            onPressed: () => Navigator.pushNamed(context, SellerProductsScreen.route),
           ),
           ProfileMenu(
             text: 'Settings',
@@ -47,7 +48,7 @@ class Body extends StatelessWidget {
             text: 'Log Out',
             icon: 'assets/icons/Log out.svg',
             onPressed: () {
-              AuthMethods().signOut().then((_) {
+              auth.signOut(context).then((_) {
                 Navigator.pushReplacementNamed(context, SignInScreen.route);
               });
             },

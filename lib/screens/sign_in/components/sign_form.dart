@@ -8,6 +8,7 @@ import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/services/shared_preference_helper.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -23,10 +24,8 @@ class _SignFormState extends State<SignForm> {
   bool loading = false;
 
   getSaveInput() async {
-    emailController.text =
-        (await SharedPreferenceHelper().getSignInEmailInput())!;
-    passwordController.text =
-        (await SharedPreferenceHelper().getSignInPasswordInput())!;
+    emailController.text = (await SharedPreferenceHelper().getSignInEmailInput()) ?? "";
+    passwordController.text = (await SharedPreferenceHelper().getSignInPasswordInput()) ?? "";
     setState(() {});
   }
 
@@ -38,6 +37,7 @@ class _SignFormState extends State<SignForm> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthMethods>(context);
     return Stack(
       clipBehavior: Clip.none,
       alignment: AlignmentDirectional.bottomCenter,
@@ -67,8 +67,7 @@ class _SignFormState extends State<SignForm> {
                     ],
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(
-                        context, ForgotPasswordScreen.route),
+                    onTap: () => Navigator.pushNamed(context, ForgotPasswordScreen.route),
                     child: Text(
                       'Forget Password',
                       style: TextStyle(decoration: TextDecoration.underline),
@@ -87,17 +86,15 @@ class _SignFormState extends State<SignForm> {
                       loading = true;
                     });
                     _formKey.currentState!.save();
-                    await SharedPreferenceHelper().saveSignInEmailInput(
-                        inputRemember ? emailController.text : "");
-                    await SharedPreferenceHelper().saveSignInPasswordInput(
-                        inputRemember ? passwordController.text : "");
-
-                    if (!await AuthMethods().signInWithEmailAndPassword(context,
-                        emailController.text, passwordController.text)) {
+                    await SharedPreferenceHelper()
+                        .saveSignInEmailInput(inputRemember ? emailController.text : "");
+                    await SharedPreferenceHelper()
+                        .saveSignInPasswordInput(inputRemember ? passwordController.text : "");
+                    if (!await auth.signInWithEmailAndPassword(
+                        context, emailController.text, passwordController.text))
                       setState(() {
                         loading = false;
                       });
-                    }
                   }
                 },
               ),
@@ -122,8 +119,7 @@ class _SignFormState extends State<SignForm> {
           setState(() {
             errors.remove(cEmailNullError);
           });
-        } else if (emailRegExp.hasMatch(value) &&
-            errors.contains(cEmailInvalidError)) {
+        } else if (emailRegExp.hasMatch(value) && errors.contains(cEmailInvalidError)) {
           setState(() {
             errors.remove(cEmailInvalidError);
           });
@@ -147,8 +143,8 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       onTap: () {
-        emailController.selection = TextSelection(
-            baseOffset: 0, extentOffset: emailController.value.text.length);
+        emailController.selection =
+            TextSelection(baseOffset: 0, extentOffset: emailController.value.text.length);
       },
       decoration: InputDecoration(
           labelText: 'Email',
@@ -190,8 +186,8 @@ class _SignFormState extends State<SignForm> {
         return null;
       },
       onTap: () {
-        passwordController.selection = TextSelection(
-            baseOffset: 0, extentOffset: passwordController.value.text.length);
+        passwordController.selection =
+            TextSelection(baseOffset: 0, extentOffset: passwordController.value.text.length);
       },
       obscureText: true,
       decoration: InputDecoration(

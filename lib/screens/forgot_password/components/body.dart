@@ -6,6 +6,7 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -56,6 +57,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthMethods>(context);
     return Form(
       key: _formKey,
       child: Column(
@@ -71,8 +73,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                 setState(() {
                   errors.remove(cEmailNullError);
                 });
-              } else if (emailRegExp.hasMatch(value) &&
-                  errors.contains(cEmailInvalidError)) {
+              } else if (emailRegExp.hasMatch(value) && errors.contains(cEmailInvalidError)) {
                 setState(() {
                   errors.remove(cEmailInvalidError);
                 });
@@ -107,7 +108,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
             text: 'Continue',
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                AuthMethods().forgotPassword(context, email);
+                auth.forgotPassword(context, email);
               }
             },
           ),

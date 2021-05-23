@@ -29,7 +29,25 @@ class ProductItems extends StatelessWidget {
                       margin: EdgeInsets.only(right: 5),
                       height: 50,
                       width: 50,
-                      child: Image.network(product[index].images[0]),
+                      child: Image.network(
+                        product[index].images[0],
+                        errorBuilder: (context, error, stackTrace) =>
+                            Icon(Icons.image),
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: cPrimaryColor,
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   DataCell(

@@ -15,8 +15,7 @@ class AuthMethods {
   createUserWithUserData(BuildContext context, List<String> userData) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: userData[0], password: userData[1]);
+          .createUserWithEmailAndPassword(email: userData[0], password: userData[1]);
       User userDetails = userCredential.user!;
       String displayName = userData[2] + " " + userData[3];
       Map<String, dynamic> userInfo = {
@@ -39,17 +38,15 @@ class AuthMethods {
     }
   }
 
-  signInWithEmailAndPassword(
-      BuildContext context, String email, String password) async {
+  signInWithEmailAndPassword(BuildContext context, String email, String password) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
       Navigator.pushReplacementNamed(context, HomeScreen.route);
       return true;
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.message!),
+        content: Text(e.toString()),
       ));
       return false;
     }
@@ -57,8 +54,7 @@ class AuthMethods {
 
   signInWithGoogle(BuildContext context) async {
     try {
-      final GoogleSignInAccount? googleSignInAccount =
-          await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleSignInAccount = await GoogleSignIn().signIn();
 
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount!.authentication;
@@ -67,17 +63,16 @@ class AuthMethods {
         idToken: googleSignInAuthentication.idToken,
         accessToken: googleSignInAuthentication.accessToken,
       );
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
       User userDetails = userCredential.user!;
 
       Map<String, dynamic> userInfo = {
-        'email': userDetails.email,
+        'email': userDetails.email ?? "",
         'username': userDetails.email!.replaceAll(new RegExp(r'@.+'), ''),
-        'name': userDetails.displayName,
-        'photoURL': userDetails.photoURL,
-        'phone': userDetails.phoneNumber,
+        'name': userDetails.displayName ?? "",
+        'photoURL': userDetails.photoURL ?? "",
+        'phone': userDetails.phoneNumber ?? "",
         'address': '',
       };
       DatabaseMethods(uid: userDetails.uid).setUserInfoToDB(userInfo).then((_) {
@@ -92,10 +87,16 @@ class AuthMethods {
     }
   }
 
-  Future signOut() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.remove('USERIDKEY');
-    await auth.signOut();
+  Future signOut(BuildContext context) async {
+    try {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.remove('USERIDKEY');
+      await auth.signOut();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
   }
 
   Future forgotPassword(BuildContext context, String email) async {

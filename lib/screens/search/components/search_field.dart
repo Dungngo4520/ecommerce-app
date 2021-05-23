@@ -1,6 +1,4 @@
 import 'package:ecommerce/constants.dart';
-import 'package:ecommerce/models/Product.dart';
-import 'package:ecommerce/services/algolia_search.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

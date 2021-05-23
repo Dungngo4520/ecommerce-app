@@ -5,6 +5,7 @@ import 'package:ecommerce/screens/sign_in/components/sign_form.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -15,14 +16,14 @@ class _BodyState extends State<Body> {
   bool loading = false;
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthMethods>(context);
     return loading
         ? LoadingScreen()
         : SafeArea(
             child: SizedBox(
               width: double.infinity,
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -56,12 +57,10 @@ class _BodyState extends State<Body> {
                               setState(() {
                                 loading = true;
                               });
-                              if (!await AuthMethods()
-                                  .signInWithGoogle(context)) {
+                              if (!await auth.signInWithGoogle(context))
                                 setState(() {
                                   loading = false;
                                 });
-                              }
                             },
                           ),
                         ],

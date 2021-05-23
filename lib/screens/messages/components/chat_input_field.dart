@@ -1,13 +1,27 @@
 import 'package:ecommerce/constants.dart';
+import 'package:ecommerce/models/ChatRoom.dart';
+import 'package:ecommerce/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ChatInputField extends StatelessWidget {
+class ChatInputField extends StatefulWidget {
+  final ChatRoom chatRoom;
   const ChatInputField({
     Key? key,
+    required this.chatRoom,
   }) : super(key: key);
 
   @override
+  State<ChatInputField> createState() => _ChatInputFieldState();
+}
+
+class _ChatInputFieldState extends State<ChatInputField> {
+  TextEditingController messageContent = TextEditingController(text: "");
+  @override
   Widget build(BuildContext context) {
+    final firestore = Provider.of<DatabaseMethods>(context);
+    final user = Provider.of<User>(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
@@ -16,7 +30,7 @@ class ChatInputField extends StatelessWidget {
           BoxShadow(
             offset: Offset(0, 4),
             blurRadius: 10,
-            color: Color(0xff087949).withOpacity(0.1),
+            color: Color(0xff087949).withOpacity(0.15),
           ),
         ],
       ),
@@ -33,10 +47,19 @@ class ChatInputField extends StatelessWidget {
             ),
             Expanded(
               child: TextField(
+                controller: messageContent,
                 decoration: InputDecoration(
                   hintText: "Type message",
                   border: InputBorder.none,
                 ),
+                onEditingComplete: () async {
+                  if (messageContent.text != "") {
+                    await firestore.addChatMessage(
+                        widget.chatRoom.id, messageContent.text, user.uid);
+                  }
+                  messageContent.clear();
+                  setState(() {});
+                },
               ),
             ),
             IconButton(
@@ -45,7 +68,13 @@ class ChatInputField extends StatelessWidget {
                 color: cPrimaryColor,
                 size: 30,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                if (messageContent.text != "") {
+                  await firestore.addChatMessage(widget.chatRoom.id, messageContent.text, user.uid);
+                }
+                messageContent.clear();
+                setState(() {});
+              },
             )
           ],
         ),

@@ -1,4 +1,3 @@
-import 'package:algolia/algolia.dart';
 import 'package:ecommerce/components/loading_screen.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Cart.dart';
@@ -17,10 +16,8 @@ class SearchItems extends StatelessWidget {
     List<Cart> cartList = Provider.of<List<Cart>>(context);
     final seachInputState = Provider.of<ValueNotifier<String>>(context);
     if (seachInputState.value == "") {
-      return Expanded(
-        child: Center(
-          child: Text("Search for product"),
-        ),
+      return Center(
+        child: Text("Search for product"),
       );
     } else {
       return StreamBuilder<List<Product>>(
@@ -65,7 +62,30 @@ class SearchItems extends StatelessWidget {
                                   height: getProportionateScreenWidth(100),
                                   width: getProportionateScreenWidth(100),
                                   child: Image.network(
-                                      snapshot.data![index].images[0]),
+                                    snapshot.data![index].images[0],
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Icon(Icons.image),
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      }
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: cPrimaryColor,
+                                          value: loadingProgress
+                                                      .expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                                 Expanded(
                                   child: Container(

@@ -4,15 +4,16 @@ import 'package:ecommerce/screens/sign_up/components/sign_up_form.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthMethods>(context);
     return SizedBox(
       width: double.infinity,
       child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+        padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -37,7 +38,7 @@ class Body extends StatelessWidget {
                   SocialDot(
                     icon: 'assets/icons/google-icon.svg',
                     onPressed: () {
-                      AuthMethods().signInWithGoogle(context);
+                      auth.signInWithGoogle(context);
                     },
                   ),
                 ],

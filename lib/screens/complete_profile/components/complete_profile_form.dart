@@ -6,12 +6,12 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CompleteProfileForm extends StatefulWidget {
   final List<String> userEmailAndPassword;
 
-  const CompleteProfileForm({Key? key, required this.userEmailAndPassword})
-      : super(key: key);
+  const CompleteProfileForm({Key? key, required this.userEmailAndPassword}) : super(key: key);
 
   @override
   _CompleteProfileFormState createState() => _CompleteProfileFormState();
@@ -20,7 +20,7 @@ class CompleteProfileForm extends StatefulWidget {
 class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
-  late String firstName, lastName, phoneNumber, address;
+  late String firstName = "", lastName = "", phoneNumber = "", address = "";
   bool loading = false;
 
   addError({required String error}) {
@@ -41,6 +41,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthMethods>(context);
     return Stack(
       clipBehavior: Clip.none,
       alignment: AlignmentDirectional.bottomCenter,
@@ -65,17 +66,16 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                     loading = true;
                   });
                   if (_formKey.currentState!.validate()) {
-                    if (!await AuthMethods().createUserWithUserData(context, [
+                    if (!await auth.createUserWithUserData(context, [
                       ...widget.userEmailAndPassword,
                       firstName,
                       lastName,
                       phoneNumber,
                       address,
-                    ])) {
+                    ]))
                       setState(() {
                         loading = false;
                       });
-                    }
                   }
                 },
               ),
@@ -110,8 +110,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       decoration: InputDecoration(
           labelText: 'Address',
           hintText: 'Enter your address',
-          suffixIcon:
-              CustomSuffixIcon(svgIcon: 'assets/icons/Location point.svg')),
+          suffixIcon: CustomSuffixIcon(svgIcon: 'assets/icons/Location point.svg')),
     );
   }
 

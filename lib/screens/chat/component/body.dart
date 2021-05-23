@@ -1,25 +1,21 @@
-import 'package:ecommerce/models/Chat.dart';
+import 'package:ecommerce/models/ChatRoom.dart';
 import 'package:ecommerce/screens/chat/component/chat_card.dart';
-import 'package:ecommerce/screens/messages/messages_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    List<ChatRoom> chatRoomList = Provider.of<List<ChatRoom>>(context);
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
-            itemCount: chatsData.length,
+          child: ListView.separated(
+            itemCount: chatRoomList.length,
             itemBuilder: (context, index) => ChatCard(
-              chat: chatsData[index],
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MessagesScreen(),
-                ),
-              ),
+              chatroom: chatRoomList[index]
             ),
+            separatorBuilder: (context, index) => Divider(height: 1),
           ),
         ),
       ],
