@@ -1,6 +1,5 @@
 import 'package:ecommerce/components/rounded_icon_button.dart';
 import 'package:ecommerce/constants.dart';
-import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
@@ -26,13 +25,10 @@ class _ColorDotsState extends State<ColorDots> {
 
   @override
   Widget build(BuildContext context) {
-    List<Cart> cartList = Provider.of<List<Cart>>(context);
     ValueNotifier<int> currentAmount = Provider.of<ValueNotifier<int>>(context);
-    ValueNotifier<bool> changed = Provider.of<ValueNotifier<bool>>(context);
     productAmount.text = currentAmount.value.toString();
     return Padding(
-      padding:
-          EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
       child: Row(
         children: [
           ...List.generate(
@@ -45,10 +41,6 @@ class _ColorDotsState extends State<ColorDots> {
             onTap: () {
               if (currentAmount.value > 0) {
                 productAmount.text = (--currentAmount.value).toString();
-              }
-              if (cartList
-                  .any((element) => element.productID == widget.product.id)) {
-                changed.value = currentAmount.value != widget.amount;
               }
             },
           ),
@@ -77,16 +69,11 @@ class _ColorDotsState extends State<ColorDots> {
                 ),
               ),
               onTap: () {
-                productAmount.selection = TextSelection(
-                    baseOffset: 0, extentOffset: productAmount.text.length);
+                productAmount.selection =
+                    TextSelection(baseOffset: 0, extentOffset: productAmount.text.length);
               },
               onChanged: (value) {
-                currentAmount.value =
-                    value.contains('-') ? 0 : int.parse(value);
-                if (cartList
-                    .any((element) => element.productID == widget.product.id)) {
-                  changed.value = currentAmount.value != widget.amount;
-                }
+                currentAmount.value = value.contains('-') ? 0 : int.parse(value);
               },
             ),
           ),
@@ -95,10 +82,6 @@ class _ColorDotsState extends State<ColorDots> {
             iconData: Icons.add,
             onTap: () {
               productAmount.text = (++currentAmount.value).toString();
-              if (cartList
-                  .any((element) => element.productID == widget.product.id)) {
-                changed.value = currentAmount.value != widget.amount;
-              }
             },
           ),
         ],
@@ -120,9 +103,7 @@ class _ColorDotsState extends State<ColorDots> {
         width: getProportionateScreenWidth(40),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(
-              color:
-                  index == selectedColor ? cPrimaryColor : Colors.transparent),
+          border: Border.all(color: index == selectedColor ? cPrimaryColor : Colors.transparent),
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(

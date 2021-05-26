@@ -1,6 +1,7 @@
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/screens/cart/components/cart_item_card.dart';
+import 'package:ecommerce/services/database.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,6 +16,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     List<Cart> cartList = Provider.of<List<Cart>>(context);
+    final firestore = Provider.of<DatabaseMethods>(context);
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: getProportionateScreenWidth(20),
@@ -41,9 +43,7 @@ class _BodyState extends State<Body> {
               ),
             ),
             onDismissed: (direction) {
-              // setState(() {
-              //   cartList.removeAt(index);
-              // });
+              firestore.deleteCart(cartList[index].id);
             },
             child: CartItemCard(cart: cartList[index]),
           ),

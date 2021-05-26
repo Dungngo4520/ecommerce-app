@@ -37,14 +37,6 @@ class _ChatInputFieldState extends State<ChatInputField> {
       child: SafeArea(
         child: Row(
           children: [
-            IconButton(
-              icon: Icon(
-                Icons.camera_alt,
-                color: cPrimaryColor,
-                size: 30,
-              ),
-              onPressed: () {},
-            ),
             Expanded(
               child: TextField(
                 controller: messageContent,
@@ -52,13 +44,11 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   hintText: "Type message",
                   border: InputBorder.none,
                 ),
-                onEditingComplete: () async {
+                onEditingComplete: () {
                   if (messageContent.text != "") {
-                    await firestore.addChatMessage(
-                        widget.chatRoom.id, messageContent.text, user.uid);
+                    firestore.addChatMessage(widget.chatRoom.id, messageContent.text, user.uid);
                   }
                   messageContent.clear();
-                  setState(() {});
                 },
               ),
             ),
@@ -68,12 +58,11 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 color: cPrimaryColor,
                 size: 30,
               ),
-              onPressed: () async {
+              onPressed: () {
                 if (messageContent.text != "") {
-                  await firestore.addChatMessage(widget.chatRoom.id, messageContent.text, user.uid);
+                  firestore.addChatMessage(widget.chatRoom.id, messageContent.text, user.uid);
                 }
                 messageContent.clear();
-                setState(() {});
               },
             )
           ],

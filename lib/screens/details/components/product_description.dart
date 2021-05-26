@@ -93,7 +93,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                 textAlign: TextAlign.center,
                               ),
                               SizedBox(height: 15),
-                              ClipOval(
+                              Container(
+                                decoration: BoxDecoration(shape: BoxShape.circle),
+                                clipBehavior: Clip.antiAlias,
                                 child: Image.network(
                                   snapshot.data!.photoURL,
                                   height: getProportionateScreenWidth(50),
@@ -167,7 +169,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                             ),
                           ),
                           SizedBox(width: 10),
-                          ClipOval(
+                          Container(
+                            decoration: BoxDecoration(shape: BoxShape.circle),
+                            clipBehavior: Clip.antiAlias,
                             child: Image.network(
                               snapshot.data!.photoURL,
                               height: getProportionateScreenWidth(50),

@@ -2,8 +2,8 @@ import 'package:ecommerce/components/default_button.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
+import 'package:ecommerce/screens/payment/payment_screen.dart';
 import 'package:ecommerce/services/database.dart';
-import 'package:ecommerce/services/momo_service_helper.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,13 +23,6 @@ class _CheckOutCardState extends State<CheckOutCard> {
   @override
   void initState() {
     super.initState();
-    MomoServiceHelper().momoInit();
-    initPlatformState();
-  }
-
-  Future<void> initPlatformState() async {
-    if (!mounted) return;
-    setState(() {});
   }
 
   @override
@@ -100,8 +93,7 @@ class _CheckOutCardState extends State<CheckOutCard> {
                           children: [
                             TextSpan(
                               text: '${NumberFormat(',###').format(amount)} ₫',
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.black87),
+                              style: TextStyle(fontSize: 16, color: Colors.black87),
                             ),
                           ],
                         ),
@@ -109,11 +101,16 @@ class _CheckOutCardState extends State<CheckOutCard> {
                       SizedBox(
                         width: getProportionateScreenWidth(190),
                         child: DefaultButton(
-                            text: 'Check Out',
-                            onPressed: () {
-                              MomoServiceHelper().openMomo(amount,
-                                  'description', 'orderId', 'orderLabel');
-                            }),
+                          text: 'Check Out',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PaymentScreen(amount: amount.toDouble()),
+                              ),
+                            );
+                          },
+                        ),
                       )
                     ],
                   ),

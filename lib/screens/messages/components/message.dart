@@ -28,7 +28,9 @@ class Message extends StatelessWidget {
           if (message.senderId != user.uid) ...[
             CircleAvatar(
               backgroundColor: Colors.black.withAlpha(20),
-              child: ClipOval(
+              child: Container(
+                decoration: BoxDecoration(shape: BoxShape.circle),
+                clipBehavior: Clip.antiAlias,
                 child: Image.network(
                   chatUser.photoURL,
                   errorBuilder: (context, error, stackTrace) => Icon(

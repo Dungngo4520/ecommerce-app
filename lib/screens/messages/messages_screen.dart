@@ -3,7 +3,6 @@ import 'package:ecommerce/models/ChatRoom.dart';
 import 'package:ecommerce/models/UserData.dart';
 import 'package:ecommerce/screens/messages/components/body.dart';
 import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class MessagesScreen extends StatelessWidget {
   static String route = '/messages';
@@ -27,7 +26,9 @@ class MessagesScreen extends StatelessWidget {
             BackButton(),
             CircleAvatar(
               backgroundColor: Colors.black.withAlpha(20),
-              child: ClipOval(
+              child: Container(
+                decoration: BoxDecoration(shape: BoxShape.circle),
+                clipBehavior: Clip.antiAlias,
                 child: Image.network(
                   userData.photoURL,
                   errorBuilder: (context, error, stackTrace) => Icon(
@@ -59,10 +60,6 @@ class MessagesScreen extends StatelessWidget {
                   Text(
                     userData.name,
                     style: TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    timeago.format(chatRoom.lastMessageTimestamp.toDate()),
-                    style: TextStyle(fontSize: 12),
                   ),
                 ],
               ),

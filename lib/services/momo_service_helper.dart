@@ -13,22 +13,31 @@ class MomoServiceHelper {
     _momoPay.on(MomoVn.EVENT_PAYMENT_ERROR, _handlePaymentError);
   }
 
-  void openMomo(amount, description, orderId, orderLabel) {
+  void openMomo({
+    double? amount,
+    String? description,
+    String? username,
+    String? orderId,
+    String? orderLabel,
+    double? fee,
+    String? extra,
+  }) {
     try {
       MomoPaymentInfo options = MomoPaymentInfo(
-          partner: 'merchant',
-          appScheme: "momomscv20210426",
-          amount: amount,
-          description: description,
-          merchantcode: 'MOMOMSCV20210426',
-          merchantname: "EMO Shopping",
-          merchantnamelabel: "EMO Shopping",
-          fee: 0,
-          username: '',
-          orderId: orderId,
-          orderLabel: orderLabel,
-          extra: "",
-          isTestMode: true);
+        partner: 'merchant',
+        appScheme: 'momomscv20210426',
+        merchantcode: 'MOMOMSCV20210426',
+        merchantname: 'EMO Shopping',
+        merchantnamelabel: 'EMO Shopping',
+        amount: amount ?? 0,
+        description: description ?? '',
+        username: username ?? '',
+        orderId: orderId ?? '',
+        orderLabel: orderLabel ?? '',
+        fee: fee ?? 0,
+        extra: extra ?? '',
+        isTestMode: true,
+      );
       _momoPay.open(options);
     } catch (e) {
       print(e.toString());
@@ -52,15 +61,14 @@ class MomoServiceHelper {
   void _handlePaymentSuccess(PaymentResponse response) {
     _momoPaymentResult = response;
     _setState();
-    Fluttertoast.showToast(
-        msg: "THÀNH CÔNG: " + response.phonenumber, timeInSecForIosWeb: 4);
+    Fluttertoast.showToast(msg: "THÀNH CÔNG: " + response.phonenumber, timeInSecForIosWeb: 4);
     print(_paymentStatus);
   }
 
   void _handlePaymentError(PaymentResponse response) {
     _momoPaymentResult = response;
     _setState();
-    Fluttertoast.showToast(
-        msg: "THẤT BẠI: " + response.message.toString(), timeInSecForIosWeb: 4);
+    Fluttertoast.showToast(msg: "THẤT BẠI: " + response.message.toString(), timeInSecForIosWeb: 4);
+    print(_paymentStatus);
   }
 }

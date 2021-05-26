@@ -1,3 +1,4 @@
+import 'package:ecommerce/screens/my_account/my_account_screen.dart';
 import 'package:ecommerce/screens/profile/components/profile_menu.dart';
 import 'package:ecommerce/screens/profile/components/profile_picture.dart';
 import 'package:ecommerce/screens/seller_products/seller_products_screen.dart';
@@ -13,12 +14,14 @@ class Body extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          ProfilePicture(),
+          ProfilePicture(changeable: false),
           SizedBox(height: 20),
           ProfileMenu(
             text: 'My Account',
             icon: 'assets/icons/User Icon.svg',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, MyAccountScreen.route);
+            },
           ),
           ProfileMenu(
             text: 'My Order',

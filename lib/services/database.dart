@@ -15,12 +15,20 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection('users').doc(uid).set(userInfo);
   }
 
+  Stream<UserData> getCurrentUser() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .map((value) => UserData.fromMap({'id': value.id, ...?value.data()}));
+  }
+
   Future<UserData> getUserById(String id) async {
     return await FirebaseFirestore.instance
         .collection('users')
         .doc(id)
         .get()
-        .then((value) => UserData.fromMap({'id': value.id, ...value.data()!}));
+        .then((value) => UserData.fromMap({'id': value.id, ...?value.data()}));
   }
 
   Future<UserData> getUserByUsername(String username) async {
@@ -29,6 +37,15 @@ class DatabaseMethods {
         .where(username, isEqualTo: username)
         .get()
         .then((value) => UserData.fromMap({'id': value.docs.first.id, ...value.docs.first.data()}));
+  }
+
+  Future updateUser({String? displayName, String? phone, String? address, String? photoURL}) async {
+    await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      if (displayName != null) 'name': displayName,
+      if (phone != null) 'phone': phone,
+      if (address != null) 'address': address,
+      if (photoURL != null) 'photoURL': photoURL,
+    });
   }
 
   // Product
@@ -52,7 +69,7 @@ class DatabaseMethods {
         .collection('products')
         .doc(id)
         .get()
-        .then((value) => Product.fromMap({'id': value.id, ...value.data()!}));
+        .then((value) => Product.fromMap({'id': value.id, ...?value.data()}));
   }
 
   // Cart
@@ -83,6 +100,15 @@ class DatabaseMethods {
         .set(cart.toMap());
   }
 
+  Future updateCartAmount(String cartId, int amount) async {
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('carts')
+        .doc(cartId)
+        .update({'quantity': amount});
+  }
+
   Future deleteCart(String cartId) async {
     return await FirebaseFirestore.instance
         .collection('users')
@@ -107,7 +133,7 @@ class DatabaseMethods {
         .collection('chatrooms')
         .doc(chatroomId)
         .get()
-        .then((value) => ChatRoom.fromMap({'id': value.id, ...value.data()!}));
+        .then((value) => ChatRoom.fromMap({'id': value.id, ...?value.data()}));
   }
 
   Future createChatroom(String userId) async {

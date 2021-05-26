@@ -36,19 +36,7 @@ class HomeHeader extends StatelessWidget {
           IconButtonWithCounter(
             image: 'assets/icons/Cart Icon.svg',
             count: cartList.length,
-            onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Provider(
-                    create: (context) => cartList,
-                    builder: (context, child) => CartScreen(),
-                  ),
-                )),
-          ),
-          IconButtonWithCounter(
-            image: 'assets/icons/Bell.svg',
-            count: 7,
-            onTap: () {},
+            onTap: () => Navigator.pushNamed(context, CartScreen.route),
           ),
         ],
       ),

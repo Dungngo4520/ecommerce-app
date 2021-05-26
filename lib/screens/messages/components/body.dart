@@ -28,7 +28,7 @@ class Body extends StatelessWidget {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     child: ListView.builder(
                       reverse: true,
                       itemCount: snapshot.data!.length,

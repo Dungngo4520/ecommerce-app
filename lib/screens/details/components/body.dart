@@ -16,8 +16,7 @@ class Body extends StatefulWidget {
   final Product product;
   final String heroTag;
 
-  const Body({Key? key, required this.product, required this.heroTag})
-      : super(key: key);
+  const Body({Key? key, required this.product, required this.heroTag}) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -30,7 +29,6 @@ class _BodyState extends State<Body> {
     List<Cart> cartList = Provider.of<List<Cart>>(context);
     final firestore = Provider.of<DatabaseMethods>(context);
     ValueNotifier<int> currentAmount = Provider.of<ValueNotifier<int>>(context);
-    ValueNotifier<bool> changed = Provider.of<ValueNotifier<bool>>(context);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -77,8 +75,7 @@ class _BodyState extends State<Body> {
                                   padding: MaterialStateProperty.all(
                                     EdgeInsets.all(10),
                                   ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all(cPrimaryColor),
+                                  backgroundColor: MaterialStateProperty.all(cPrimaryColor),
                                   shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -86,47 +83,26 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (cartList.any((element) =>
-                                      element.productID == widget.product.id)) {
-                                    if (currentAmount.value == 0) {
-                                      firestore.deleteCart(cart.id);
-                                      Fluttertoast.showToast(
-                                          msg: 'Cart Deleted');
-                                    } else {
-                                      if (changed.value) {
-                                        firestore.updateCart(
-                                            cart.id,
-                                            Cart(
-                                              id: cart.id,
-                                              productID: cart.productID,
-                                              quantity: currentAmount.value,
-                                            ));
-                                        Fluttertoast.showToast(
-                                            msg: 'Cart Updated');
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            msg: 'Item is already in cart');
-                                      }
-                                    }
+                                  if (cartList
+                                      .any((element) => element.productID == widget.product.id)) {
+                                    Fluttertoast.showToast(msg: 'Item is already in cart');
                                   } else {
                                     if (currentAmount.value != 0) {
                                       firestore.updateCart(
                                           (cartList.length + 1).toString(),
                                           Cart(
-                                            id: (cartList.length + 1)
-                                                .toString(),
+                                            id: (cartList.length + 1).toString(),
                                             productID: widget.product.id,
                                             quantity: currentAmount.value,
                                           ));
                                       Fluttertoast.showToast(msg: 'Cart Added');
                                     } else {
-                                      Fluttertoast.showToast(
-                                          msg: 'Please specify an amount');
+                                      Fluttertoast.showToast(msg: 'Please specify an amount');
                                     }
                                   }
                                 },
                                 child: Text(
-                                  changed.value ? 'Update Cart' : 'Add to Cart',
+                                  'Add to Cart',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: getProportionateScreenWidth(18),

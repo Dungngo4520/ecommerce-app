@@ -33,7 +33,9 @@ class ChatCard extends StatelessWidget {
             dense: true,
             leading: CircleAvatar(
               backgroundColor: Colors.black.withAlpha(20),
-              child: ClipOval(
+              child: Container(
+                decoration: BoxDecoration(shape: BoxShape.circle),
+                clipBehavior: Clip.antiAlias,
                 child: Image.network(
                   snapshot.data!.photoURL,
                   errorBuilder: (context, error, stackTrace) => Icon(

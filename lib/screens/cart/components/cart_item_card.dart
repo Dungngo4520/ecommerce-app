@@ -19,77 +19,121 @@ class CartItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firestore = Provider.of<DatabaseMethods>(context);
-    return FutureBuilder<Product>(
-      future: firestore.getProductByID(cart.productID),
-      builder: (context, snapshot) => snapshot.hasData
-          ? Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: getProportionateScreenWidth(88),
-                  child: AspectRatio(
-                    aspectRatio: 0.88,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: cSecondaryColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Image.network(
-                        snapshot.data!.images[0],
-                        errorBuilder: (context, error, stackTrace) =>
-                            Icon(Icons.image),
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: cPrimaryColor,
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
-                      ),
+    return StreamBuilder<Product>(
+      stream: Stream.fromFuture(firestore.getProductByID(cart.productID)),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: getProportionateScreenWidth(88),
+                child: AspectRatio(
+                  aspectRatio: 0.88,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: cSecondaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Image.network(
+                      snapshot.data!.images[0],
+                      errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: cPrimaryColor,
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
-                SizedBox(width: getProportionateScreenWidth(20)),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        snapshot.data!.title,
-                        style: TextStyle(fontSize: 16, color: Colors.black87),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: 10),
-                      Text.rich(
-                        TextSpan(
-                          text:
-                              '${NumberFormat(',###').format(snapshot.data!.price)} ₫',
-                          style: TextStyle(
-                            color: cPrimaryColor,
+              ),
+              SizedBox(width: getProportionateScreenWidth(20)),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      snapshot.data!.title,
+                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text.rich(
+                          TextSpan(
+                            text: '${NumberFormat(',###').format(snapshot.data!.price)} ₫',
+                            style: TextStyle(
+                              color: cPrimaryColor,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: ' x${cart.quantity}',
+                                style: TextStyle(color: cTextColor),
+                              ),
+                            ],
                           ),
+                        ),
+                        Row(
                           children: [
-                            TextSpan(
-                              text: ' x${cart.quantity}',
-                              style: TextStyle(color: cTextColor),
+                            TextButton(
+                              child: Icon(
+                                Icons.add_rounded,
+                                color: cPrimaryColor,
+                              ),
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all(EdgeInsets.all(5)),
+                                minimumSize: MaterialStateProperty.all(Size.zero),
+                                overlayColor:
+                                    MaterialStateProperty.all(cPrimaryColor.withOpacity(0.1)),
+                                shape: MaterialStateProperty.all(CircleBorder()),
+                              ),
+                              onPressed: () {
+                                firestore.updateCartAmount(cart.id, cart.quantity + 1);
+                              },
+                            ),
+                            TextButton(
+                              child: Icon(
+                                Icons.remove_rounded,
+                                color: cPrimaryColor,
+                              ),
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all(EdgeInsets.all(5)),
+                                minimumSize: MaterialStateProperty.all(Size.zero),
+                                overlayColor:
+                                    MaterialStateProperty.all(cPrimaryColor.withOpacity(0.1)),
+                                shape: MaterialStateProperty.all(CircleBorder()),
+                              ),
+                              onPressed: () {
+                                if (cart.quantity > 1)
+                                  firestore.updateCartAmount(cart.id, cart.quantity - 1);
+                              },
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            )
-          : LoadingScreen(),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          );
+        } else {
+          return LoadingScreen();
+        }
+      },
     );
   }
 }
