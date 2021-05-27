@@ -29,6 +29,7 @@ class _BodyState extends State<Body> {
     List<Cart> cartList = Provider.of<List<Cart>>(context);
     final firestore = Provider.of<DatabaseMethods>(context);
     ValueNotifier<int> currentAmount = Provider.of<ValueNotifier<int>>(context);
+    ValueNotifier<Color> currentColor = Provider.of<ValueNotifier<Color>>(context);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -83,8 +84,9 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (cartList
-                                      .any((element) => element.productID == widget.product.id)) {
+                                  if (cartList.any((element) =>
+                                      element.productID == widget.product.id &&
+                                      element.color == currentColor.value)) {
                                     Fluttertoast.showToast(msg: 'Item is already in cart');
                                   } else {
                                     if (currentAmount.value != 0) {
@@ -94,6 +96,7 @@ class _BodyState extends State<Body> {
                                             id: (cartList.length + 1).toString(),
                                             productID: widget.product.id,
                                             quantity: currentAmount.value,
+                                            color: currentColor.value,
                                           ));
                                       Fluttertoast.showToast(msg: 'Cart Added');
                                     } else {

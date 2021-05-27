@@ -16,16 +16,19 @@ class DetailsScreen extends StatelessWidget {
       providers: [
         Provider<Cart>.value(
           value: cartList.firstWhere((e) => e.productID == agrument.product.id,
-              orElse: () => Cart(id: "", productID: "", quantity: 0)),
+              orElse: () => Cart(id: "", productID: "", quantity: 0, color: Colors.transparent)),
         ),
         ChangeNotifierProvider<ValueNotifier<int>>(
           create: (context) => ValueNotifier(cartList
               .firstWhere((e) => e.productID == agrument.product.id,
-                  orElse: () => Cart(id: "", productID: "", quantity: 0))
+                  orElse: () => Cart(id: "", productID: "", quantity: 0, color: Colors.transparent))
               .quantity),
         ),
         ChangeNotifierProvider<ValueNotifier<bool>>(
           create: (context) => ValueNotifier(false),
+        ),
+        ChangeNotifierProvider<ValueNotifier<Color>>(
+          create: (context) => ValueNotifier(agrument.product.colors[0]),
         ),
       ],
       builder: (context, child) => Scaffold(

@@ -3,6 +3,7 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ColorDots extends StatefulWidget {
@@ -26,6 +27,7 @@ class _ColorDotsState extends State<ColorDots> {
   @override
   Widget build(BuildContext context) {
     ValueNotifier<int> currentAmount = Provider.of<ValueNotifier<int>>(context);
+    ValueNotifier<Color> currentColor = Provider.of<ValueNotifier<Color>>(context);
     productAmount.text = currentAmount.value.toString();
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
@@ -33,7 +35,31 @@ class _ColorDotsState extends State<ColorDots> {
         children: [
           ...List.generate(
             widget.product.colors.length,
-            (index) => buildColorDot(index),
+            (index) => GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedColor = index;
+                });
+                currentColor.value = widget.product.colors[selectedColor];
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 2),
+                padding: EdgeInsets.all(8),
+                height: getProportionateScreenWidth(40),
+                width: getProportionateScreenWidth(40),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: index == selectedColor ? cPrimaryColor : Colors.transparent),
+                ),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: widget.product.colors[index],
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
           ),
           Spacer(),
           RoundedIconButton(
@@ -68,6 +94,7 @@ class _ColorDotsState extends State<ColorDots> {
                   borderSide: BorderSide(color: cPrimaryColor),
                 ),
               ),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               onTap: () {
                 productAmount.selection =
                     TextSelection(baseOffset: 0, extentOffset: productAmount.text.length);
@@ -85,32 +112,6 @@ class _ColorDotsState extends State<ColorDots> {
             },
           ),
         ],
-      ),
-    );
-  }
-
-  GestureDetector buildColorDot(int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedColor = index;
-        });
-      },
-      child: Container(
-        margin: EdgeInsets.only(right: 2),
-        padding: EdgeInsets.all(8),
-        height: getProportionateScreenWidth(40),
-        width: getProportionateScreenWidth(40),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: index == selectedColor ? cPrimaryColor : Colors.transparent),
-        ),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: widget.product.colors[index],
-            shape: BoxShape.circle,
-          ),
-        ),
       ),
     );
   }
