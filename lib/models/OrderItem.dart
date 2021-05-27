@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class OrderItem {
-  final String orderItemId, orderId, productId;
+  final String orderItemId;
+  final String orderId;
+  final String productId;
   final int amount;
   final Color color;
 

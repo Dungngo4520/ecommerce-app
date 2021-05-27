@@ -4,12 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Product {
-  final String id, title, description;
+  final String id;
+  final String title;
+  final String description;
+  final String ownerId;
+  final int price;
+  final double rating;
   final List<String> images;
   final List<Color> colors;
-  final double rating;
-  int price;
-  final String ownerId;
 
   Product({
     required this.id,
@@ -23,32 +25,32 @@ class Product {
   });
 
   Product copyWith({
-    required String id,
-    title,
-    description,
-    required int price,
+    String? id,
+    String? title,
+    String? description,
     List<String>? images,
     List<Color>? colors,
     double? rating,
+    int? price,
     String? ownerId,
   }) {
     return Product(
-      id: id,
-      title: title,
-      description: description,
-      price: price,
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
       images: images ?? this.images,
       colors: colors ?? this.colors,
       rating: rating ?? this.rating,
+      price: price ?? this.price,
       ownerId: ownerId ?? this.ownerId,
     );
   }
 
-  Map<String, dynamic> toMap({required bool includeProductId}) {
+  Map<String, dynamic> toMap() {
     return {
-      if (includeProductId) 'id': id,
-      'description': description,
+      'id': id,
       'title': title,
+      'description': description,
       'images': images,
       'colors': colors.map((x) => x.value).toList(),
       'rating': rating,
@@ -59,25 +61,24 @@ class Product {
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
+      id: map['id'],
+      title: map['title'],
       description: map['description'],
       images: List<String>.from(map['images']),
       colors: List<Color>.from(map['colors']?.map((x) => Color(x))),
       rating: map['rating'],
       price: map['price'],
       ownerId: map['ownerId'],
-      id: map['id'],
-      title: map['title'],
     );
   }
 
-  String toJson() => json.encode(toMap(includeProductId: true));
+  String toJson() => json.encode(toMap());
 
-  factory Product.fromJson(String source) =>
-      Product.fromMap(json.decode(source));
+  factory Product.fromJson(String source) => Product.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'Product(description: $description, images: $images, colors: $colors, rating: $rating, price: $price, ownerId: $ownerId)';
+    return 'Product(id: $id, title: $title, description: $description, images: $images, colors: $colors, rating: $rating, price: $price, ownerId: $ownerId)';
   }
 
   @override
@@ -85,6 +86,8 @@ class Product {
     if (identical(this, other)) return true;
 
     return other is Product &&
+        other.id == id &&
+        other.title == title &&
         other.description == description &&
         listEquals(other.images, images) &&
         listEquals(other.colors, colors) &&
@@ -95,7 +98,9 @@ class Product {
 
   @override
   int get hashCode {
-    return description.hashCode ^
+    return id.hashCode ^
+        title.hashCode ^
+        description.hashCode ^
         images.hashCode ^
         colors.hashCode ^
         rating.hashCode ^

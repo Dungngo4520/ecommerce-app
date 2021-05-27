@@ -20,7 +20,7 @@ class DatabaseMethods {
         .collection('users')
         .doc(uid)
         .snapshots()
-        .map((value) => UserData.fromMap({'id': value.id, ...?value.data()}));
+        .map((value) => UserData.fromMap({...?value.data()}));
   }
 
   Future<UserData> getUserById(String id) async {
@@ -28,7 +28,7 @@ class DatabaseMethods {
         .collection('users')
         .doc(id)
         .get()
-        .then((value) => UserData.fromMap({'id': value.id, ...?value.data()}));
+        .then((value) => UserData.fromMap({...?value.data()}));
   }
 
   Future<UserData> getUserByUsername(String username) async {
@@ -36,7 +36,7 @@ class DatabaseMethods {
         .collection('users')
         .where(username, isEqualTo: username)
         .get()
-        .then((value) => UserData.fromMap({'id': value.docs.first.id, ...value.docs.first.data()}));
+        .then((value) => UserData.fromMap({...value.docs.first.data()}));
   }
 
   Future updateUser({String? displayName, String? phone, String? address, String? photoURL}) async {
@@ -60,8 +60,8 @@ class DatabaseMethods {
     else
       getProduct = FirebaseFirestore.instance.collection('products').get();
 
-    return getProduct.then(
-        (value) => value.docs.map((e) => Product.fromMap({'id': e.id, ...e.data()})).toList());
+    return getProduct
+        .then((value) => value.docs.map((e) => Product.fromMap({...e.data()})).toList());
   }
 
   Future<Product> getProductByID(String id) async {
@@ -79,7 +79,7 @@ class DatabaseMethods {
         .doc(uid)
         .collection('carts')
         .snapshots()
-        .map((event) => event.docs.map((e) => Cart.fromMap({'id': e.id, ...e.data()})).toList());
+        .map((event) => event.docs.map((e) => Cart.fromMap({...e.data()})).toList());
   }
 
   Future<List<Product>> getProductListInCart(List<Cart> cartList) async {
@@ -124,8 +124,7 @@ class DatabaseMethods {
         .collection('chatrooms')
         .where('users', arrayContains: uid)
         .snapshots()
-        .map(
-            (event) => event.docs.map((e) => ChatRoom.fromMap({'id': e.id, ...e.data()})).toList());
+        .map((event) => event.docs.map((e) => ChatRoom.fromMap({...e.data()})).toList());
   }
 
   Future<ChatRoom> getChatRoomById(String chatroomId) async {
@@ -133,7 +132,7 @@ class DatabaseMethods {
         .collection('chatrooms')
         .doc(chatroomId)
         .get()
-        .then((value) => ChatRoom.fromMap({'id': value.id, ...?value.data()}));
+        .then((value) => ChatRoom.fromMap({...?value.data()}));
   }
 
   Future createChatroom(String userId) async {
@@ -167,8 +166,7 @@ class DatabaseMethods {
         .collection('chatmessages')
         .orderBy('timestamp', descending: true)
         .snapshots()
-        .map((event) =>
-            event.docs.map((e) => ChatMessage.fromMap({'id': e.id, ...e.data()})).toList());
+        .map((event) => event.docs.map((e) => ChatMessage.fromMap({...e.data()})).toList());
   }
 
   Future addChatMessage(String chatroomId, String content, String senderId) async {

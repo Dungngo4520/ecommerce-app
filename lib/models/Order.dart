@@ -2,7 +2,10 @@ import 'package:ecommerce/enum.dart';
 import 'package:ecommerce/models/OrderItem.dart';
 
 class Order {
-  final String orderId, buyerId, sellerId, address;
+  final String orderId;
+  final String buyerId;
+  final String sellerId;
+  final String address;
   final DateTime created;
   final List<OrderItem> orderItems;
   final OrderState status;
