@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/ChatMessage.dart';
 import 'package:ecommerce/models/ChatRoom.dart';
+import 'package:ecommerce/models/Order.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/models/UserData.dart';
 
@@ -55,7 +56,7 @@ class DatabaseMethods {
 
   Future<List<Product>> getProducts(int? limit) async {
     Future<QuerySnapshot<Map>> getProduct;
-    if (limit! > 0)
+    if (limit != null && limit > 0)
       getProduct = FirebaseFirestore.instance.collection('products').limit(limit).get();
     else
       getProduct = FirebaseFirestore.instance.collection('products').get();
@@ -116,6 +117,19 @@ class DatabaseMethods {
         .collection('carts')
         .doc(cartId)
         .delete();
+  }
+
+  Future clearCart() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('carts')
+        .get()
+        .then((value) {
+      for (var i = 0; i < value.docs.length; i++) {
+        value.docs[i].reference.delete();
+      }
+    });
   }
 
   // Chat
@@ -189,5 +203,65 @@ class DatabaseMethods {
 
   String combineID(String a, String b) {
     return a.compareTo(b) == -1 ? '$a,$b' : '$b,$a';
+  }
+
+  // Order
+  Future createOrder({
+    required List<Cart> cartList,
+    required String receiverName,
+    required String receiverPhone,
+    required String receiverAddress,
+    required String paymentMethod,
+    required double amount,
+    required double discount,
+  }) async {
+    DocumentReference doc =
+        FirebaseFirestore.instance.collection('users').doc(uid).collection('orders').doc();
+    await doc.set({
+      'id': doc.id,
+      'buyerId': uid,
+      'address': receiverAddress,
+      'receiverName': receiverName,
+      'receiverPhone': receiverPhone,
+      'paymentMethod': paymentMethod,
+      'amount': amount,
+      'discount': discount,
+      'created': FieldValue.serverTimestamp(),
+      'status': 'Verified',
+    });
+    CollectionReference itemsCol = doc.collection('items');
+    for (var i = 0; i < cartList.length; i++) {
+      await itemsCol.doc(cartList[i].id).set(cartList[i].toMap());
+    }
+  }
+
+  Future<Order> getOrderbyId(String orderId) async {
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('orders')
+        .doc(orderId)
+        .get()
+        .then((value) => Order.fromMap({...?value.data()}));
+  }
+
+  Stream<List<Order>> getOrders() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('orders')
+        .snapshots()
+        .map((event) => event.docs.map((e) => Order.fromMap({...e.data()})).toList());
+  }
+
+  Stream<List<Cart>> getOrderItems(String orderId) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('orders')
+        .doc(orderId)
+        .collection('items')
+        .snapshots()
+        .map((event) => event.docs.map((e) => Cart.fromMap({...e.data()})).toList());
   }
 }

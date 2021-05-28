@@ -1,8 +1,10 @@
 import 'package:ecommerce/components/default_button.dart';
+import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/UserData.dart';
 import 'package:ecommerce/screens/order/order_screen.dart';
 import 'package:ecommerce/screens/payment/component/payment_method.dart';
 import 'package:ecommerce/screens/payment/component/payment_summary.dart';
+import 'package:ecommerce/services/database.dart';
 import 'package:ecommerce/services/momo_service_helper.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +35,8 @@ class _BodyState extends State<Body> {
     final double amount = Provider.of<double>(context);
     ValueNotifier<int> method = Provider.of<ValueNotifier<int>>(context);
     final userData = Provider.of<UserData>(context);
+    final firestore = Provider.of<DatabaseMethods>(context);
+    final cartList = Provider.of<List<Cart>>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -58,6 +62,13 @@ class _BodyState extends State<Body> {
                 //     fee: 0,
                 //   );
                 // }
+                // firestore.createOrder(
+                //     cartList: cartList,
+                //     userData: userData,
+                //     paymentMethod: method.value == 1 ? 'Momo' : 'Direct',
+                //     amount: amount,
+                //     discount: 0);
+                // firestore.clearCart();
                 if (userData.address != "" && userData.phone != "" && userData.name != "") {
                   Navigator.pop(context);
                   Navigator.pushReplacement(
@@ -68,7 +79,9 @@ class _BodyState extends State<Body> {
                   );
                 } else
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please update your information before continue'),),
+                    SnackBar(
+                      content: Text('Please update your information before continue'),
+                    ),
                   );
               }),
         )
