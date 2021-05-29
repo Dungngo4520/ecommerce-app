@@ -70,7 +70,7 @@ class DatabaseMethods {
         .collection('products')
         .doc(id)
         .get()
-        .then((value) => Product.fromMap({'id': value.id, ...?value.data()}));
+        .then((value) => Product.fromMap({...?value.data()}));
   }
 
   // Cart
