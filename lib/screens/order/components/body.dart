@@ -11,6 +11,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class Body extends StatelessWidget {
+  const Body({Key? key, required this.orderId}) : super(key: key);
+  final String orderId;
+
   @override
   Widget build(BuildContext context) {
     final firestore = Provider.of<DatabaseMethods>(context);
@@ -19,7 +22,7 @@ class Body extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
           child: FutureBuilder<Order>(
-            future: firestore.getOrderbyId('Ue3WrUjiiDOQrGgqk33n'),
+            future: firestore.getOrderbyId(orderId),
             builder: (context, order) {
               if (order.hasData) {
                 return Column(

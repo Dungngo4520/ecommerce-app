@@ -233,6 +233,7 @@ class DatabaseMethods {
     for (var i = 0; i < cartList.length; i++) {
       await itemsCol.doc(cartList[i].id).set(cartList[i].toMap());
     }
+    return doc.id;
   }
 
   Future<Order> getOrderbyId(String orderId) async {
