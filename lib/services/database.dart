@@ -227,7 +227,7 @@ class DatabaseMethods {
       'amount': amount,
       'discount': discount,
       'created': FieldValue.serverTimestamp(),
-      'status': 'Verified',
+      'status': 'Success',
     });
     CollectionReference itemsCol = doc.collection('items');
     for (var i = 0; i < cartList.length; i++) {

@@ -42,7 +42,6 @@ class Body extends StatelessWidget {
                             fontSize: getProportionateScreenWidth(13),
                           ),
                         ),
-                        Divider(),
                         StreamBuilder<List<Cart>>(
                           stream: firestore.getOrderItems(orderList.data![index].id),
                           builder: (context, cartList) {
@@ -124,9 +123,7 @@ class Body extends StatelessWidget {
                     ),
                   );
                 },
-                separatorBuilder: (context, index) => Divider(
-                  thickness: getProportionateScreenHeight(5),
-                ),
+                separatorBuilder: (context, index) => Divider(),
               );
             }
             return LoadingScreen();

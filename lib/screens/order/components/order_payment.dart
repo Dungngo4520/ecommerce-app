@@ -30,7 +30,7 @@ class OrderPayment extends StatelessWidget {
               'Payment Method',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text('Paid ${order.paymentMethod == 'Momo' ? 'with Momo E-Wallet' : 'Directly'}'),
+            Text('Pay ${order.paymentMethod == 'Momo' ? 'with Momo E-Wallet' : 'Directly'}'),
           ],
         )
       ],
