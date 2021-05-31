@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:wemapgl/wemapgl.dart';
 
 class MyAccountScreen extends StatefulWidget {
   static final String route = 'myaccoount';
@@ -19,12 +21,23 @@ class MyAccountScreen extends StatefulWidget {
 
 class _MyAccountScreenState extends State<MyAccountScreen> {
   bool isEdit = false;
+
+  List<WeMapPlace> wemapAddress = [];
+  WeMapSearchAPI searchAPI = WeMapSearchAPI();
+  LatLng latLng = new LatLng(20.037, 105.7876);
+
   TextEditingController displayNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  FocusNode addressFocus = FocusNode();
+
+  late final userData;
+  late final firestore;
+  late final storage;
 
   dynamic imageFile;
   final picker = ImagePicker();
+
   Future pickImage(ImageSource source) async {
     final pickedFile = await picker.getImage(source: source);
     setState(() {
@@ -36,13 +49,18 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    UserData userData = Provider.of<UserData>(context);
-    final firestore = Provider.of<DatabaseMethods>(context);
-    final storage = Provider.of<StorageMethods>(context);
+  void didChangeDependencies() {
+    userData = Provider.of<UserData>(context, listen: false);
+    firestore = Provider.of<DatabaseMethods>(context, listen: false);
+    storage = Provider.of<StorageMethods>(context, listen: false);
     displayNameController.text = userData.name;
     phoneController.text = userData.phone;
     addressController.text = userData.address;
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('My Account Information'),
@@ -53,13 +71,19 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                 if (displayNameController.text == "" ||
                     displayNameController.text == "" ||
                     addressController.text == "") {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text("Please fill all the fields")));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Please properly fill all the field'),
+                    ),
+                  );
                 } else {
                   await firestore.updateUser(
                       displayName: displayNameController.text,
                       phone: phoneController.text,
                       address: addressController.text);
+                  setState(() {
+                    isEdit = false;
+                  });
                 }
                 if (imageFile != null) {
                   String photoURL = await storage.uploadFile(imageFile);
@@ -68,10 +92,11 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                 setState(() {
                   imageFile = null;
                 });
-              }
-              setState(() {
-                isEdit = !isEdit;
-              });
+              } else
+                setState(() {
+                  isEdit = true;
+                  wemapAddress = [];
+                });
             },
             shape: CircleBorder(),
             minWidth: 0,
@@ -165,104 +190,130 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                   ],
                 ),
               ),
-              Table(
-                defaultColumnWidth: IntrinsicColumnWidth(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  TableRow(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(5),
+                        padding: EdgeInsets.symmetric(vertical: isEdit ? 10 : 5),
                         child: Text('Email:'),
                       ),
                       Container(
-                        padding: EdgeInsets.all(5),
-                        child: Text(userData.email),
-                      ),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(5),
+                        padding: EdgeInsets.symmetric(vertical: isEdit ? 10 : 5),
                         child: Text('Name:'),
                       ),
-                      isEdit
-                          ? Container(
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: TextFormField(
-                                controller: displayNameController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(getProportionateScreenWidth(5)),
-                                  isDense: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(getProportionateScreenHeight(10)),
-                                  ),
-                                ),
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            )
-                          : Container(
-                              padding: EdgeInsets.all(5),
-                              child: Text(displayNameController.text),
-                            ),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
                       Container(
-                        padding: EdgeInsets.all(5),
+                        padding: EdgeInsets.symmetric(vertical: isEdit ? 10 : 5),
                         child: Text('Phone:'),
                       ),
-                      isEdit
-                          ? Container(
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: TextFormField(
-                                controller: phoneController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(getProportionateScreenWidth(5)),
-                                  isDense: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(getProportionateScreenHeight(10)),
-                                  ),
-                                ),
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            )
-                          : Container(
-                              padding: EdgeInsets.all(5),
-                              child: Text(phoneController.text),
-                            ),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
                       Container(
-                        padding: EdgeInsets.all(5),
+                        padding: EdgeInsets.symmetric(vertical: isEdit ? 10 : 5),
                         child: Text('Address:'),
                       ),
-                      isEdit
-                          ? Container(
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: TextFormField(
-                                controller: addressController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(getProportionateScreenWidth(5)),
-                                  isDense: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(getProportionateScreenHeight(10)),
-                                  ),
-                                ),
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            )
-                          : Container(
-                              padding: EdgeInsets.all(5),
-                              child: Text(addressController.text),
-                            ),
                     ],
+                  ),
+                  Container(
+                    width: getProportionateScreenWidth(
+                        SizeConfig.screenWidth - getProportionateScreenWidth(150)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: isEdit ? 10 : 5, horizontal: 5),
+                          child: Text(userData.email),
+                        ),
+                        isEdit
+                            ? Container(
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: TextFormField(
+                                  controller: displayNameController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(getProportionateScreenWidth(5)),
+                                    isDense: true,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(getProportionateScreenHeight(10)),
+                                    ),
+                                  ),
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              )
+                            : Container(
+                                padding: EdgeInsets.all(5),
+                                child: Text(displayNameController.text),
+                              ),
+                        isEdit
+                            ? Container(
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: TextFormField(
+                                  controller: phoneController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(getProportionateScreenWidth(5)),
+                                    isDense: true,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(getProportionateScreenHeight(10)),
+                                    ),
+                                  ),
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              )
+                            : Container(
+                                padding: EdgeInsets.all(5),
+                                child: Text(phoneController.text),
+                              ),
+                        isEdit
+                            ? Container(
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: TextFormField(
+                                  controller: addressController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(getProportionateScreenWidth(5)),
+                                    isDense: true,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(getProportionateScreenHeight(10)),
+                                    ),
+                                  ),
+                                  focusNode: addressFocus,
+                                  style: TextStyle(fontSize: 14),
+                                  onTap: () => addressController.selection = TextSelection(
+                                      baseOffset: 0, extentOffset: addressController.text.length),
+                                  onChanged: (value) async {
+                                    List<WeMapPlace> places = await searchAPI.getSearchResult(
+                                        value, latLng, WeMapGeocoder.Pelias);
+                                    setState(() {
+                                      wemapAddress = places;
+                                    });
+                                  },
+                                ),
+                              )
+                            : Container(
+                                padding: EdgeInsets.all(5),
+                                child: Text(addressController.text),
+                              ),
+                        Container(
+                          height: SizeConfig.screenHeight - getProportionateScreenHeight(500),
+                          child: ListView.builder(
+                            itemCount: wemapAddress.length,
+                            itemBuilder: (context, index) => ListTile(
+                              title: Text(wemapAddress[index].placeName),
+                              contentPadding: EdgeInsets.zero,
+                              onTap: () {
+                                addressFocus.unfocus();
+                                addressController.text = wemapAddress[index].placeName;
+                                setState(() {
+                                  wemapAddress = [];
+                                });
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
