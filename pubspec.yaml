@@ -24,8 +24,10 @@ dependencies:
   flutter_svg: ^0.22.0
   fluttertoast: ^8.0.6
   google_sign_in: ^5.0.2
+  http: ^0.13.3
   image_picker: ^0.7.5+3
   intl: ^0.17.0
+  location: ^4.2.1
   momo_vn: ^1.0.4
   provider: ^5.0.0
   random_string: ^2.2.0-nullsafety

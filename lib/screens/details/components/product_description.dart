@@ -3,6 +3,7 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/ChatRoom.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/models/UserData.dart';
+import 'package:ecommerce/screens/direction/direction_screen.dart';
 import 'package:ecommerce/screens/messages/messages_screen.dart';
 import 'package:ecommerce/services/database.dart';
 import 'package:ecommerce/size_config.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:wemapgl/wemapgl.dart';
 
 class ProductDescription extends StatefulWidget {
   const ProductDescription({
@@ -25,6 +27,8 @@ class ProductDescription extends StatefulWidget {
 }
 
 class _ProductDescriptionState extends State<ProductDescription> {
+  late LatLng latLng;
+
   bool isSeeMore = false;
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
           ),
         ),
         SizedBox(height: 10),
-        Padding(
+        Container(
+          width: SizeConfig.screenWidth,
           padding: EdgeInsets.symmetric(
             horizontal: getProportionateScreenWidth(20),
           ),
@@ -80,8 +85,8 @@ class _ProductDescriptionState extends State<ProductDescription> {
               ),
               StreamBuilder<UserData>(
                 stream: Stream.fromFuture(firestore.getUserById(widget.product.ownerId)),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
+                builder: (context, userdata) {
+                  if (userdata.hasData && userdata.data != null) {
                     return GestureDetector(
                       onTap: () => showDialog(
                         context: context,
@@ -89,7 +94,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                           title: Column(
                             children: [
                               Text(
-                                snapshot.data!.name,
+                                userdata.data!.name,
                                 textAlign: TextAlign.center,
                               ),
                               SizedBox(height: 15),
@@ -97,7 +102,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                 decoration: BoxDecoration(shape: BoxShape.circle),
                                 clipBehavior: Clip.antiAlias,
                                 child: Image.network(
-                                  snapshot.data!.photoURL,
+                                  userdata.data!.photoURL,
                                   height: getProportionateScreenWidth(50),
                                   errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
                                   loadingBuilder: (context, child, loadingProgress) {
@@ -123,15 +128,15 @@ class _ProductDescriptionState extends State<ProductDescription> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'Email: ${snapshot.data!.email.isEmpty ? 'none' : snapshot.data!.email}',
+                                'Email: ${userdata.data!.email.isEmpty ? 'none' : userdata.data!.email}',
                                 style: TextStyle(fontSize: 12),
                               ),
                               Text(
-                                'Phone: ${snapshot.data!.phone.isEmpty ? 'none' : snapshot.data!.phone}',
+                                'Phone: ${userdata.data!.phone.isEmpty ? 'none' : userdata.data!.phone}',
                                 style: TextStyle(fontSize: 12),
                               ),
                               Text(
-                                'Address: ${snapshot.data!.address.isEmpty ? 'none' : snapshot.data!.address}',
+                                'Address: ${userdata.data!.address.isEmpty ? 'none' : userdata.data!.address}',
                                 style: TextStyle(fontSize: 12),
                               ),
                             ],
@@ -149,21 +154,44 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => MessagesScreen(
-                                          userData: snapshot.data!, chatRoom: chatRoom),
+                                          userData: userdata.data!, chatRoom: chatRoom),
                                     ),
                                   );
                                 } else {
                                   Fluttertoast.showToast(msg: 'It\'s you');
                                 }
                               },
-                            )
+                            ),
+                            MaterialButton(
+                              child: Text("Go to this user"),
+                              textColor: cPrimaryColor,
+                              onPressed: () async {
+                                if (user.uid != widget.product.ownerId) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DirectionScreen(
+                                        originIcon: 'assets/images/origin.png',
+                                        destinationIcon: 'assets/images/destination.png',
+                                        destinationPlace: WeMapPlace(
+                                          location: LatLng(20.999222, 105.84462100000002),
+                                          description: userdata.data!.name,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  Fluttertoast.showToast(msg: 'It\'s you');
+                                }
+                              },
+                            ),
                           ],
                         ),
                       ),
                       child: Row(
                         children: [
                           Text(
-                            snapshot.data!.name,
+                            userdata.data!.name,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                             ),
@@ -173,7 +201,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                             decoration: BoxDecoration(shape: BoxShape.circle),
                             clipBehavior: Clip.antiAlias,
                             child: Image.network(
-                              snapshot.data!.photoURL,
+                              userdata.data!.photoURL,
                               height: getProportionateScreenWidth(50),
                               errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
                               loadingBuilder: (context, child, loadingProgress) {

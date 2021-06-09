@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:wemapgl/wemapgl.dart';
 
 class MyAccountScreen extends StatefulWidget {
@@ -157,7 +156,6 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         child: SizedBox(
                           height: 46,
                           width: 46,
-                          // ignore: deprecated_member_use
                           child: PopupMenuButton(
                             child: Container(
                               decoration: BoxDecoration(
@@ -300,11 +298,11 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                           child: ListView.builder(
                             itemCount: wemapAddress.length,
                             itemBuilder: (context, index) => ListTile(
-                              title: Text(wemapAddress[index].placeName),
+                              title: Text(wemapAddress[index].placeName.toString()),
                               contentPadding: EdgeInsets.zero,
                               onTap: () {
                                 addressFocus.unfocus();
-                                addressController.text = wemapAddress[index].placeName;
+                                addressController.text = wemapAddress[index].placeName.toString();
                                 setState(() {
                                   wemapAddress = [];
                                 });

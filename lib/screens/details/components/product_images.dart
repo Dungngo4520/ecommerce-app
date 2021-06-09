@@ -24,8 +24,13 @@ class _ProductImagesState extends State<ProductImages> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: getProportionateScreenWidth(238),
+        Container(
+          width: SizeConfig.screenWidth,
+          margin: EdgeInsets.all(30),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          clipBehavior: Clip.antiAlias,
           child: Hero(
             tag: widget.heroTag,
             child: Material(
@@ -34,8 +39,7 @@ class _ProductImagesState extends State<ProductImages> {
                 aspectRatio: 1,
                 child: Image.network(
                   widget.product.images[selectedImage],
-                  errorBuilder: (context, error, stackTrace) =>
-                      Icon(Icons.image),
+                  errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) {
                       return child;
@@ -55,14 +59,17 @@ class _ProductImagesState extends State<ProductImages> {
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ...List.generate(
-              widget.product.images.length,
-              (index) => buildSmallPreview(index),
-            ),
-          ],
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ...List.generate(
+                widget.product.images.length,
+                (index) => buildSmallPreview(index),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -76,17 +83,14 @@ class _ProductImagesState extends State<ProductImages> {
         });
       },
       child: Container(
-        margin:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(8)),
+        margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(8)),
         padding: EdgeInsets.all(getProportionateScreenHeight(8)),
         height: getProportionateScreenWidth(48),
         width: getProportionateScreenWidth(48),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-              color:
-                  selectedImage == index ? cPrimaryColor : Colors.transparent),
+          border: Border.all(color: selectedImage == index ? cPrimaryColor : Colors.transparent),
         ),
         child: Image.network(
           widget.product.images[index],
@@ -99,8 +103,7 @@ class _ProductImagesState extends State<ProductImages> {
               child: CircularProgressIndicator(
                 color: cPrimaryColor,
                 value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
+                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
                     : null,
               ),
             );

@@ -2,6 +2,7 @@ import 'package:ecommerce/components/loading_screen.dart';
 import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
+import 'package:ecommerce/screens/details/details_screen.dart';
 import 'package:ecommerce/services/database.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
@@ -26,33 +27,47 @@ class CartItemCard extends StatelessWidget {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: getProportionateScreenWidth(88),
-                child: AspectRatio(
-                  aspectRatio: 0.88,
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: cSecondaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(15),
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsScreen(),
+                    settings: RouteSettings(
+                      arguments: ProductDetailsAgrument(
+                        product: snapshot.data!,
+                        heroTag: snapshot.data!.id + 'cart',
+                      ),
                     ),
-                    child: Image.network(
-                      snapshot.data!.images[0],
-                      errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child;
-                        }
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: cPrimaryColor,
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
-                          ),
-                        );
-                      },
+                  ),
+                ),
+                child: SizedBox(
+                  width: getProportionateScreenWidth(88),
+                  child: AspectRatio(
+                    aspectRatio: 0.88,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: cSecondaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Image.network(
+                        snapshot.data!.images[0],
+                        errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: cPrimaryColor,
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),

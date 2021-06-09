@@ -1,6 +1,5 @@
 import 'package:ecommerce/components/loading_screen.dart';
 import 'package:ecommerce/constants.dart';
-import 'package:ecommerce/models/Cart.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/screens/details/details_screen.dart';
 import 'package:ecommerce/services/algolia_search.dart';
@@ -13,7 +12,6 @@ import 'package:provider/provider.dart';
 class SearchItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Cart> cartList = Provider.of<List<Cart>>(context);
     final seachInputState = Provider.of<ValueNotifier<String>>(context);
     if (seachInputState.value == "") {
       return Center(
@@ -21,15 +19,13 @@ class SearchItems extends StatelessWidget {
       );
     } else {
       return StreamBuilder<List<Product>>(
-        stream: Stream.fromFuture(
-            AlgoliaSearch().searchProduct(seachInputState.value)),
+        stream: Stream.fromFuture(AlgoliaSearch().searchProduct(seachInputState.value)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isNotEmpty) {
               return SingleChildScrollView(
                 clipBehavior: Clip.none,
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
+                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -39,10 +35,7 @@ class SearchItems extends StatelessWidget {
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Provider(
-                              create: (context) => cartList,
-                              builder: (context, child) => DetailsScreen(),
-                            ),
+                            builder: (context) => DetailsScreen(),
                             settings: RouteSettings(
                               arguments: ProductDetailsAgrument(
                                 product: snapshot.data![index],
@@ -63,24 +56,17 @@ class SearchItems extends StatelessWidget {
                                   width: getProportionateScreenWidth(100),
                                   child: Image.network(
                                     snapshot.data![index].images[0],
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Icon(Icons.image),
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
+                                    errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
+                                    loadingBuilder: (context, child, loadingProgress) {
                                       if (loadingProgress == null) {
                                         return child;
                                       }
                                       return Center(
                                         child: CircularProgressIndicator(
                                           color: cPrimaryColor,
-                                          value: loadingProgress
-                                                      .expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  loadingProgress
-                                                      .expectedTotalBytes!
+                                          value: loadingProgress.expectedTotalBytes != null
+                                              ? loadingProgress.cumulativeBytesLoaded /
+                                                  loadingProgress.expectedTotalBytes!
                                               : null,
                                         ),
                                       );
@@ -91,10 +77,8 @@ class SearchItems extends StatelessWidget {
                                   child: Container(
                                     height: getProportionateScreenWidth(80),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Flexible(
                                           child: Text(
@@ -109,33 +93,26 @@ class SearchItems extends StatelessWidget {
                                           ),
                                         ),
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(
                                               children: [
                                                 Text(
-                                                  snapshot.data![index].rating
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600),
+                                                  snapshot.data![index].rating.toString(),
+                                                  style: TextStyle(fontWeight: FontWeight.w600),
                                                 ),
                                                 const SizedBox(width: 5),
-                                                SvgPicture.asset(
-                                                    'assets/icons/Star Icon.svg')
+                                                SvgPicture.asset('assets/icons/Star Icon.svg')
                                               ],
                                             ),
                                             Text(
                                               NumberFormat(',###')
-                                                      .format(snapshot
-                                                          .data![index].price)
+                                                      .format(snapshot.data![index].price)
                                                       .toString() +
                                                   '₫',
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
-                                              style: TextStyle(
-                                                  color: cPrimaryColor),
+                                              style: TextStyle(color: cPrimaryColor),
                                             ),
                                           ],
                                         )
@@ -153,12 +130,10 @@ class SearchItems extends StatelessWidget {
                 ),
               );
             } else {
-              Center(child: Text("Found nothing. ¯\_(ツ)_/¯"));
+              return Center(child: Text("Found nothing. ¯\_(ツ)_/¯"));
             }
-          } else {
-            Center(child: Text("Found nothing. ¯\_(ツ)_/¯"));
-          }
-          return LoadingScreen();
+          } else
+            return LoadingScreen();
         },
       );
     }
