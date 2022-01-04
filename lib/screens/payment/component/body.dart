@@ -24,7 +24,7 @@ class _BodyState extends State<Body> {
   late String paymentStatus;
 
   late DatabaseMethods firestore;
-  late double amount;
+  late int amount;
   late ValueNotifier<int> method;
   late UserData userData;
   late List<Cart> cartList;
@@ -45,14 +45,14 @@ class _BodyState extends State<Body> {
 
   void _setState() {
     paymentStatus = 'Đã chuyển thanh toán';
-    if (momoPaymentResult.isSuccess) {
+    if (momoPaymentResult.isSuccess!) {
       paymentStatus += "\nTình trạng: Thành công.";
-      paymentStatus += "\nSố điện thoại: " + momoPaymentResult.phonenumber;
-      paymentStatus += "\nExtra: " + momoPaymentResult.extra;
-      paymentStatus += "\nToken: " + momoPaymentResult.token;
+      paymentStatus += "\nSố điện thoại: " + momoPaymentResult.phoneNumber!;
+      paymentStatus += "\nExtra: " + momoPaymentResult.extra!;
+      paymentStatus += "\nToken: " + momoPaymentResult.token!;
     } else {
       paymentStatus += "\nTình trạng: Thất bại.";
-      paymentStatus += "\nExtra: " + momoPaymentResult.extra;
+      paymentStatus += "\nExtra: " + momoPaymentResult.extra!;
       paymentStatus += "\nMã lỗi: " + momoPaymentResult.status.toString();
     }
   }
@@ -60,7 +60,7 @@ class _BodyState extends State<Body> {
   void handlePaymentSuccess(PaymentResponse response) {
     momoPaymentResult = response;
     _setState();
-    Fluttertoast.showToast(msg: "THÀNH CÔNG: " + response.phonenumber, timeInSecForIosWeb: 4);
+    Fluttertoast.showToast(msg: "THÀNH CÔNG", timeInSecForIosWeb: 4);
     print(paymentStatus);
     createOrderOnPaymentSuccess();
   }
@@ -93,21 +93,22 @@ class _BodyState extends State<Body> {
   }
 
   void openMomo({
-    double? amount,
+    int? amount,
     String? description,
     String? username,
     String? orderId,
     String? orderLabel,
-    double? fee,
+    int? fee,
     String? extra,
   }) {
     try {
       MomoPaymentInfo options = MomoPaymentInfo(
         partner: 'merchant',
+        partnerCode: 'MOMOMSCV20210426',
         appScheme: 'momomscv20210426',
-        merchantcode: 'MOMOMSCV20210426',
-        merchantname: 'EMO Shopping',
-        merchantnamelabel: 'EMO Shopping',
+        merchantCode: 'MOMOMSCV20210426',
+        merchantName: 'EMO Shopping',
+        merchantNameLabel: 'EMO Shopping',
         amount: amount ?? 0,
         description: description ?? '',
         username: username ?? '',
@@ -127,7 +128,7 @@ class _BodyState extends State<Body> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     firestore = Provider.of<DatabaseMethods>(context);
-    amount = Provider.of<double>(context);
+    amount = Provider.of<int>(context);
     method = Provider.of<ValueNotifier<int>>(context);
     userData = Provider.of<UserData>(context);
     cartList = Provider.of<List<Cart>>(context);

@@ -3,7 +3,7 @@ import 'package:ecommerce/constants.dart';
 import 'package:ecommerce/models/ChatRoom.dart';
 import 'package:ecommerce/models/Product.dart';
 import 'package:ecommerce/models/UserData.dart';
-import 'package:ecommerce/screens/direction/direction_screen.dart';
+import 'package:ecommerce/screens/direction_screen/direction_screen.dart';
 import 'package:ecommerce/screens/messages/messages_screen.dart';
 import 'package:ecommerce/services/database.dart';
 import 'package:ecommerce/size_config.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:wemapgl/wemapgl.dart';
+// import 'package:wemapgl/wemapgl.dart';
 
 class ProductDescription extends StatefulWidget {
   const ProductDescription({
@@ -27,7 +27,7 @@ class ProductDescription extends StatefulWidget {
 }
 
 class _ProductDescriptionState extends State<ProductDescription> {
-  late LatLng latLng;
+  // late LatLng latLng;
 
   bool isSeeMore = false;
   @override
@@ -50,7 +50,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
         Padding(
           padding: EdgeInsets.only(
             left: getProportionateScreenWidth(20),
-            right: getProportionateScreenWidth(64),
+            right: getProportionateScreenWidth(20),
           ),
           child: GestureDetector(
             onTap: () {
@@ -58,12 +58,37 @@ class _ProductDescriptionState extends State<ProductDescription> {
                 isSeeMore = !isSeeMore;
               });
             },
-            child: isSeeMore
-                ? Text(widget.product.description)
-                : Text(
-                    widget.product.description,
-                    maxLines: 3,
-                  ),
+            child: Builder(
+              builder: (context) {
+                if (!isSeeMore) {
+                  return Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          widget.product.description,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Container(
+                          height: 15,
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                              blurStyle: BlurStyle.normal,
+                              color: Colors.white70,
+                              offset: Offset(0, -15),
+                              blurRadius: 2,
+                            )
+                          ]),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return Text(widget.product.description);
+                }
+              },
+            ),
           ),
         ),
         SizedBox(height: 10),
@@ -163,7 +188,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                               },
                             ),
                             MaterialButton(
-                              child: Text("Go to this user"),
+                              child: Text('Navigate to shop'),
                               textColor: cPrimaryColor,
                               onPressed: () async {
                                 if (user.uid != widget.product.ownerId) {
@@ -171,12 +196,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => DirectionScreen(
-                                        originIcon: 'assets/images/origin.png',
-                                        destinationIcon: 'assets/images/destination.png',
-                                        destinationPlace: WeMapPlace(
-                                          location: LatLng(20.999222, 105.84462100000002),
-                                          description: userdata.data!.name,
-                                        ),
+                                        destinationPlace: userdata.data?.address ?? '',
                                       ),
                                     ),
                                   );

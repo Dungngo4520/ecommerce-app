@@ -5,14 +5,17 @@ import 'package:ecommerce/services/auth.dart';
 import 'package:ecommerce/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:here_sdk/core.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:wemapgl/wemapgl.dart' as WEMAP;
+// import 'package:wemapgl/wemapgl.dart' as WEMAP;
 
 void main() async {
-  WEMAP.Configuration.setWeMapKey('WEMAP_API_KEY');
+  // WEMAP.Configuration.setWeMapKey('WEMAP_API_KEY');
+  SdkContext.init(IsolateOrigin.main);
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 }
 

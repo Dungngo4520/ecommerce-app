@@ -6,6 +6,7 @@ import 'package:ecommerce/screens/details/details_screen.dart';
 import 'package:ecommerce/services/database.dart';
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -155,6 +156,8 @@ class CartItemCard extends StatelessWidget {
                               onPressed: () {
                                 if (cart.quantity > 1)
                                   firestore.updateCartAmount(cart.id, cart.quantity - 1);
+                                else
+                                  Fluttertoast.showToast(msg: 'Swipe left to delete');
                               },
                             ),
                           ],

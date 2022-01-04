@@ -39,16 +39,13 @@ class ProductCard extends StatelessWidget {
                     child: GestureDetector(
                       onTap: onTap,
                       child: Container(
-                        padding:
-                            EdgeInsets.all(getProportionateScreenWidth(20)),
+                        padding: EdgeInsets.all(getProportionateScreenWidth(10)),
                         decoration: BoxDecoration(
-                          color: cSecondaryColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: Image.network(
                           product.images[0],
-                          errorBuilder: (context, error, stackTrace) =>
-                              Icon(Icons.image),
+                          errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) {
                               return child;
@@ -56,8 +53,7 @@ class ProductCard extends StatelessWidget {
                             return Center(
                               child: CircularProgressIndicator(
                                 color: cPrimaryColor,
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
+                                value: loadingProgress.expectedTotalBytes != null
                                     ? loadingProgress.cumulativeBytesLoaded /
                                         loadingProgress.expectedTotalBytes!
                                     : null,
@@ -71,24 +67,22 @@ class ProductCard extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 5),
-              Text(
-                product.title,
-                style: TextStyle(color: Colors.black87),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+              Container(
+                height: getProportionateScreenWidth(50),
+                child: Text(
+                  product.title,
+                  style: TextStyle(color: Colors.black87),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${NumberFormat(',###').format(product.price)} ₫',
-                    style: TextStyle(
-                      fontSize: getProportionateScreenWidth(18),
-                      fontWeight: FontWeight.w600,
-                      color: cPrimaryColor,
-                    ),
-                  ),
-                ],
+              Text(
+                '${NumberFormat(',###').format(product.price)} ₫',
+                style: TextStyle(
+                  fontSize: getProportionateScreenWidth(18),
+                  fontWeight: FontWeight.w600,
+                  color: cPrimaryColor,
+                ),
               ),
             ],
           ),

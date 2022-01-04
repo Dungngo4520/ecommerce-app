@@ -45,8 +45,10 @@ class AuthMethods {
       Navigator.pushReplacementNamed(context, HomeScreen.route);
       return true;
     } catch (e) {
+      String msg = e.toString();
+      msg = msg.substring(msg.indexOf(']') + 2);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
+        content: Text(msg),
       ));
       return false;
     }
@@ -68,6 +70,7 @@ class AuthMethods {
       User userDetails = userCredential.user!;
 
       Map<String, dynamic> userInfo = {
+        'id': userDetails.uid,
         'email': userDetails.email ?? "",
         'username': userDetails.email!.replaceAll(new RegExp(r'@.+'), ''),
         'name': userDetails.displayName ?? "",

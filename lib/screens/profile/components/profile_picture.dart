@@ -13,7 +13,7 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserData userData = Provider.of<UserData>(context);
+    UserData userData = Provider.of<UserData>(context, listen: true);
     return SizedBox(
       height: 115,
       width: 115,
@@ -28,6 +28,7 @@ class ProfilePicture extends StatelessWidget {
               clipBehavior: Clip.antiAlias,
               child: Image.network(
                 userData.photoURL,
+                fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Icon(
                   Icons.account_circle,
                   color: Colors.white,

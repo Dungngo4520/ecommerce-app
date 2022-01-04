@@ -66,7 +66,7 @@ class Product {
       description: map['description'],
       images: List<String>.from(map['images']),
       colors: List<Color>.from(map['colors']?.map((x) => Color(x))),
-      rating: map['rating'],
+      rating: map['rating'].toDouble(),
       price: map['price'],
       ownerId: map['ownerId'],
     );

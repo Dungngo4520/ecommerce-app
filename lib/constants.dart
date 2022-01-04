@@ -1,10 +1,10 @@
 import 'package:ecommerce/size_config.dart';
 import 'package:flutter/material.dart';
 
-const cPrimaryColor = Color(0xFFFF7643);
-const cPrimaryLightColor = Color(0xFFFFECDF);
+const cPrimaryColor = Color(0xFF43A4FF);
+const cPrimaryLightColor = Color(0xFFE8FAFF);
 const cPrimaryGradientColor = LinearGradient(
-    colors: [Color(0xFFFFA53E), Color(0xFFFF7643)],
+    colors: [Color(0xFF4b6cb7), Color(0xFF182848)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight);
 const cSecondaryColor = Color(0xFF979797);
@@ -25,7 +25,6 @@ final otpInputDecoration = InputDecoration(
   enabledBorder: outlineInputBorder(),
   focusedBorder: outlineInputBorder(),
   border: outlineInputBorder(),
-  
 );
 
 OutlineInputBorder outlineInputBorder() {

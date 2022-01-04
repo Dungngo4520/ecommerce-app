@@ -11,8 +11,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  wemapgl:
-    path: ../
   algolia: ^1.0.1
   cloud_firestore: ^2.2.0
   cupertino_icons: ^1.0.2
@@ -27,12 +25,20 @@ dependencies:
   http: ^0.13.3
   image_picker: ^0.7.5+3
   intl: ^0.17.0
-  location: ^4.2.1
-  momo_vn: ^1.0.4
+  # location: ^4.2.1
+  momo_vn: ^2.0.1
   provider: ^5.0.0
   random_string: ^2.2.0-nullsafety
   shared_preferences: ^2.0.5
   timeago: ^3.0.2
+  csv:
+  auto_size_text_field: ^1.0.1
+  
+
+  here_sdk:
+    path: ../here_sdk
+  geolocator: ^8.0.1
+  vector_math: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +60,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/sample_product.csv
 
   fonts:
     - family: Muli

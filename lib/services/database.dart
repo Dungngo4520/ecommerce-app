@@ -54,12 +54,19 @@ class DatabaseMethods {
     return FirebaseFirestore.instance.collection('products').doc(productId).set(productInfo);
   }
 
-  Future<List<Product>> getProducts(int? limit) async {
+  Future<List<Product>> getProducts(int? limit, bool? random) async {
     Future<QuerySnapshot<Map>> getProduct;
     if (limit != null && limit > 0)
-      getProduct = FirebaseFirestore.instance.collection('products').limit(limit).get();
+      getProduct = FirebaseFirestore.instance
+          .collection('products')
+          .limit(limit)
+          .orderBy('id', descending: random ?? false)
+          .get();
     else
-      getProduct = FirebaseFirestore.instance.collection('products').get();
+      getProduct = FirebaseFirestore.instance
+          .collection('products')
+          .orderBy('id', descending: random ?? false)
+          .get();
 
     return getProduct
         .then((value) => value.docs.map((e) => Product.fromMap({...e.data()})).toList());
@@ -71,6 +78,18 @@ class DatabaseMethods {
         .doc(id)
         .get()
         .then((value) => Product.fromMap({...?value.data()}));
+  }
+
+  Future createProduct(Product product) async {
+    return await FirebaseFirestore.instance
+        .collection('products')
+        .doc(product.id)
+        .set(product.toMap());
+  }
+
+  Future createProductAutoId(Product product) async {
+    DocumentReference newProduct = FirebaseFirestore.instance.collection('products').doc();
+    return await newProduct.set({'id': newProduct.id, ...product.toMap()});
   }
 
   // Cart
@@ -212,7 +231,7 @@ class DatabaseMethods {
     required String receiverPhone,
     required String receiverAddress,
     required String paymentMethod,
-    required double amount,
+    required int amount,
     required double discount,
   }) async {
     DocumentReference doc =

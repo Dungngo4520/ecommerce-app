@@ -71,7 +71,10 @@ class _CheckOutCardState extends State<CheckOutCard> {
                           color: cSecondaryColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: SvgPicture.asset('assets/icons/receipt.svg'),
+                        child: SvgPicture.asset(
+                          'assets/icons/receipt.svg',
+                          color: cPrimaryColor,
+                        ),
                       ),
                       Spacer(),
                       Text('Add voucher code'),
@@ -106,7 +109,7 @@ class _CheckOutCardState extends State<CheckOutCard> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PaymentScreen(amount: amount.toDouble()),
+                                builder: (context) => PaymentScreen(amount: amount),
                               ),
                             );
                           },

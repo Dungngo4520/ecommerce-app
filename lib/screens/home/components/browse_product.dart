@@ -18,7 +18,7 @@ class BrowseProduct extends StatelessWidget {
     final firestore = Provider.of<DatabaseMethods>(context);
     return FutureBuilder<List<Product>>(
       initialData: [],
-      future: firestore.getProducts(20),
+      future: firestore.getProducts(20, true),
       builder: (context, snapshot) {
         return SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
@@ -95,7 +95,7 @@ class BrowseProduct extends StatelessWidget {
                                     Text(
                                       snapshot.data![index].title,
                                       overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
+                                      maxLines: 2,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 16,
@@ -122,7 +122,11 @@ class BrowseProduct extends StatelessWidget {
                                               '₫',
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
-                                          style: TextStyle(color: cPrimaryColor),
+                                          style: TextStyle(
+                                            color: cPrimaryColor,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ],
                                     )

@@ -8,19 +8,18 @@ class CustomAppBar extends PreferredSize {
   final double rating;
 
   CustomAppBar({required this.rating})
-      : super(
-            child: AppBar(),
-            preferredSize: Size.fromHeight(AppBar().preferredSize.height));
+      : super(child: AppBar(), preferredSize: Size.fromHeight(AppBar().preferredSize.height));
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+      child: Transform.translate(
+        offset: Offset(0, getProportionateScreenHeight(-10)),
         child: Container(
+          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           margin: EdgeInsets.only(top: getProportionateScreenHeight(20)),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RoundedIconButton(
@@ -28,7 +27,10 @@ class CustomAppBar extends PreferredSize {
                 onTap: () => Navigator.pop(context),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(15),
+                  vertical: getProportionateScreenWidth(5),
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
@@ -39,7 +41,7 @@ class CustomAppBar extends PreferredSize {
                       rating.toString(),
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    const SizedBox(width: 5),
+                    SizedBox(width: getProportionateScreenWidth(5)),
                     SvgPicture.asset('assets/icons/Star Icon.svg')
                   ],
                 ),

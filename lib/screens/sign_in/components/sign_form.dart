@@ -162,10 +162,6 @@ class _SignFormState extends State<SignForm> {
           setState(() {
             errors.remove(cPasswordNullError);
           });
-        } else if (value.length >= 8 && errors.contains(cPasswordShortError)) {
-          setState(() {
-            errors.remove(cPasswordShortError);
-          });
         }
         return null;
       },
@@ -175,13 +171,6 @@ class _SignFormState extends State<SignForm> {
             errors.add(cPasswordNullError);
           });
           return 'This field must be filled';
-        } else if (value.length < 8 &&
-            !errors.contains(cPasswordShortError) &&
-            !errors.contains(cPasswordNullError)) {
-          setState(() {
-            errors.add(cPasswordShortError);
-          });
-          return cPasswordShortError;
         }
         return null;
       },

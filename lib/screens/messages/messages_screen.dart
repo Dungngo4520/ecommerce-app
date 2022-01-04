@@ -18,6 +18,7 @@ class MessagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: key,
       appBar: AppBar(
         titleSpacing: 0,
         automaticallyImplyLeading: false,
@@ -59,7 +60,7 @@ class MessagesScreen extends StatelessWidget {
                 children: [
                   Text(
                     userData.name,
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16, color: cTextColor, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

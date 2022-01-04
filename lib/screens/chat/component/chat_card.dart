@@ -62,6 +62,7 @@ class ChatCard extends StatelessWidget {
             title: Text(
               snapshot.data!.name,
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

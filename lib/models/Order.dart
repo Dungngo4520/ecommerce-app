@@ -9,7 +9,7 @@ class Order {
   final String receiverPhone;
   final String address;
   final String paymentMethod;
-  final double amount;
+  final int amount;
   final double discount;
   final Timestamp created;
   final String status;
@@ -34,7 +34,7 @@ class Order {
     String? receiverPhone,
     String? address,
     String? paymentMethod,
-    double? amount,
+    int? amount,
     double? discount,
     Timestamp? created,
     String? status,
@@ -76,7 +76,7 @@ class Order {
       receiverPhone: map['receiverPhone'],
       address: map['address'],
       paymentMethod: map['paymentMethod'],
-      amount: map['amount'],
+      amount: map['amount'].toInt(),
       discount: map['discount'],
       created: map['created'],
       status: map['status'],

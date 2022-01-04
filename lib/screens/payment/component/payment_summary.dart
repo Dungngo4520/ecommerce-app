@@ -11,7 +11,7 @@ class PaymentSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double amount = Provider.of<double>(context);
+    final int amount = Provider.of<int>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

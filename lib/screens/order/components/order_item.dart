@@ -46,15 +46,15 @@ class OrderItem extends StatelessWidget {
             SizedBox(
               width: getProportionateScreenWidth(88),
               child: AspectRatio(
-                aspectRatio: 0.88,
+                aspectRatio: 1,
                 child: Container(
-                  padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: cSecondaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Image.network(
                     product.images[0],
+                    fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) {

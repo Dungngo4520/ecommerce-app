@@ -26,9 +26,11 @@ class _ProductImagesState extends State<ProductImages> {
       children: [
         Container(
           width: SizeConfig.screenWidth,
-          margin: EdgeInsets.all(30),
+          margin: EdgeInsets.symmetric(
+              horizontal: getProportionateScreenWidth(30),
+              vertical: getProportionateScreenWidth(10)),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
           ),
           clipBehavior: Clip.antiAlias,
           child: Hero(
@@ -37,23 +39,26 @@ class _ProductImagesState extends State<ProductImages> {
               type: MaterialType.transparency,
               child: AspectRatio(
                 aspectRatio: 1,
-                child: Image.network(
-                  widget.product.images[selectedImage],
-                  errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: cPrimaryColor,
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-                  },
+                child: Container(
+                  color: Colors.white,
+                  child: Image.network(
+                    widget.product.images[selectedImage],
+                    errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: cPrimaryColor,
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -65,7 +70,7 @@ class _ProductImagesState extends State<ProductImages> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ...List.generate(
-                widget.product.images.length,
+                widget.product.images.length - 1,
                 (index) => buildSmallPreview(index),
               ),
             ],

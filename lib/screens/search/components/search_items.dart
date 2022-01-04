@@ -23,39 +23,41 @@ class SearchItems extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data!.isNotEmpty) {
-              return SingleChildScrollView(
-                clipBehavior: Clip.none,
-                padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...List.generate(
-                      snapshot.data!.length,
-                      (index) => GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailsScreen(),
-                            settings: RouteSettings(
-                              arguments: ProductDetailsAgrument(
-                                product: snapshot.data![index],
-                                heroTag: snapshot.data![index].id + 'search',
-                              ),
+              return Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => Divider(height: 1),
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsScreen(),
+                          settings: RouteSettings(
+                            arguments: ProductDetailsAgrument(
+                              product: snapshot.data![index],
+                              heroTag: snapshot.data![index].id + 'search',
                             ),
                           ),
                         ),
-                        child: Hero(
-                          tag: snapshot.data![index].id + 'search',
-                          child: Material(
-                            type: MaterialType.transparency,
-                            child: Row(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 5),
-                                  height: getProportionateScreenWidth(100),
+                      ),
+                      child: Container(
+                        height: getProportionateScreenWidth(100),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Hero(
+                              tag: snapshot.data![index].id + 'search',
+                              child: Material(
+                                borderOnForeground: true,
+                                type: MaterialType.transparency,
+                                child: Container(
                                   width: getProportionateScreenWidth(100),
+                                  padding: EdgeInsets.all(5),
                                   child: Image.network(
                                     snapshot.data![index].images[0],
+                                    fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) => Icon(Icons.image),
                                     loadingBuilder: (context, child, loadingProgress) {
                                       if (loadingProgress == null) {
@@ -73,60 +75,59 @@ class SearchItems extends StatelessWidget {
                                     },
                                   ),
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    height: getProportionateScreenWidth(80),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            snapshot.data![index].title,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  snapshot.data![index].rating.toString(),
-                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                ),
-                                                const SizedBox(width: 5),
-                                                SvgPicture.asset('assets/icons/Star Icon.svg')
-                                              ],
-                                            ),
-                                            Text(
-                                              NumberFormat(',###')
-                                                      .format(snapshot.data![index].price)
-                                                      .toString() +
-                                                  '₫',
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(color: cPrimaryColor),
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    snapshot.data![index].title,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                      color: Colors.black,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            snapshot.data![index].rating.toString(),
+                                            style: TextStyle(fontWeight: FontWeight.w600),
+                                          ),
+                                          const SizedBox(width: 5),
+                                          SvgPicture.asset('assets/icons/Star Icon.svg')
+                                        ],
+                                      ),
+                                      Text(
+                                        NumberFormat(',###')
+                                                .format(snapshot.data![index].price)
+                                                .toString() +
+                                            '₫',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: cPrimaryColor,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               );
             } else {

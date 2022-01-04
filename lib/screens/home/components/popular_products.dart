@@ -19,7 +19,7 @@ class PopularProducts extends StatelessWidget {
     List<Cart> cartList = Provider.of<List<Cart>>(context);
     return FutureBuilder<List<Product>>(
       initialData: [],
-      future: firestore.getProducts(5),
+      future: firestore.getProducts(5, false),
       builder: (context, snapshot) => Column(
         children: [
           SectionTitle(text: 'Popular Products', onTap: () {}),
@@ -58,9 +58,7 @@ class PopularProducts extends StatelessWidget {
                       ),
                     ),
                   ),
-                SizedBox(
-                  width: getProportionateScreenWidth(20),
-                ),
+                SizedBox(width: getProportionateScreenWidth(20)),
               ],
             ),
           ),
